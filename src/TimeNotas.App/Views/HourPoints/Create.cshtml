@@ -1,4 +1,4 @@
-﻿@model TimeNotas.App.Models.Apontamento
+﻿@model TimeNotas.App.Models.TimeEntryModel
 
 @{
     ViewData["Title"] = "Create";
@@ -13,9 +13,9 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
             <div class="form-group">
-                <label asp-for="DataHora" class="control-label"></label>
-                <input asp-for="DataHora" class="form-control" />
-                <span asp-validation-for="DataHora" class="text-danger"></span>
+                <label asp-for="DateHourPointed" class="control-label"></label>
+                <input asp-for="DateHourPointed" class="form-control" />
+                <span asp-validation-for="DateHourPointed" class="text-danger"></span>
             </div>            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

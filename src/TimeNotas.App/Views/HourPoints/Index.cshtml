@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TimeNotas.App.Models.HourPointsModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExtraTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MissingTime)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td title="@item.Date">
+                @item.Date.ToString("dd/MM/yyyy")
+            </td>
+            <td>
+                @item.ExtraTime
+            </td>
+            <td>
+                @item.MissingTime
+            </td>
+            @foreach (var timeEntry in item.TimeEntries)
+            {
+                <td>
+                    @Html.ActionLink(timeEntry.ToString(), "Edit", new { timeEntryId = timeEntry.Id })
+                </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>

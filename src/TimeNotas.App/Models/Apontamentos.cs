@@ -13,14 +13,20 @@ namespace TimeNotas.App.Models
         public Apontamentos(IEnumerable<Apontamento> apontamentos)
         {
             _apontamentos = apontamentos;
-            DatasHoras = new Dictionary<string, IEnumerable<Apontamento>>();
+            DatasHoras = new Dictionary<DateTime, IEnumerable<Apontamento>>();
 
-            foreach (var item in _apontamentos.GroupBy(a => $"{a.DataHora.DayOfWeek} {a.DataHora.Date.ToString("dd/MM/yyyy")}"))
+            foreach (var item in _apontamentos.GroupBy(a => a.DataHora.Date))
                 DatasHoras.Add(item.Key,  item.OrderBy(a => a.DataHora));
 
         }
 
+        [Display(Name = "Horas extras")]
+        public string HorasExtra { get; private set; }
+
+        [Display(Name = "Horas faltantes")]
+        public string HorasFaltantes { get; private set; }
+
         [Display(Name = "Data/Hora apontamentos")]
-        public IDictionary<string, IEnumerable<Apontamento>> DatasHoras { get; private set; }
+        public IDictionary<DateTime, IEnumerable<Apontamento>> DatasHoras { get; private set; }
     }
 }
