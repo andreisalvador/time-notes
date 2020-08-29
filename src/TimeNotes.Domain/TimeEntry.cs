@@ -21,6 +21,20 @@ namespace TimeNotes.Domain
         internal void AssociateHourPoints(Guid hourPointsId)
             => HourPointsId = hourPointsId;
 
+        public void ChangeDateHourPointed(DateTime dateHourPointed)
+        {
+            if (dateHourPointed.Date != DateHourPointed.Date)
+                throw new ArgumentException("The hour's date points can't be different.");
+
+            if (SameTime(dateHourPointed))
+                return;
+
+            DateHourPointed = dateHourPointed;
+        }
+
+        public bool SameTime(DateTime dateHourPointed)
+            => dateHourPointed.Hour.Equals(DateHourPointed.Hour) && dateHourPointed.Minute.Equals(DateHourPointed.Minute);
+
         public override void Validate()
         {
             Validate(this, new TimeEntryValidator());

@@ -80,12 +80,18 @@ namespace TimeNotas.App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(TimeEntryModel timeEntryModel)
+        public async Task<IActionResult> Edit(TimeEntryModel timeEntryModel)
         {
             try
             {
-                apontamentos.RemoveAll(a => a.Id.Equals(timeEntryModel.Id));
-                apontamentos.Add(timeEntryModel);
+                TimeEntry timeEntry = await _hourPointsRepository.GetTimeEntryById(timeEntryModel.Id);
+
+                timeEntry.ChangeDateHourPointed(timeEntry.DateHourPointed);
+
+                _hourPointsRepository.UpdateTimeEntry(timeEntry);
+
+                await _hourPointsRepository.Commit();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
