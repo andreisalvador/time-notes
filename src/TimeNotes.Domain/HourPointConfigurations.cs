@@ -23,9 +23,31 @@ namespace TimeNotes.Domain
             Validate();
         }
 
+        public void ChangeWorkDays(DaysOfWeek workDays)
+        {
+            if (Enum.IsDefined(typeof(DaysOfWeek), workDays))
+                WorkDays = workDays;
+        }
+
+        public void ChangeLunchTime(TimeSpan lunchTime)
+        {
+            if (IsTimeValid(lunchTime))
+                LunchTime = lunchTime;            
+        }
+
+
+        public void ChangeOfficeHour(TimeSpan officeHour)
+        {
+            if (IsTimeValid(officeHour))
+                OfficeHour = officeHour;
+        }
+
         public override void Validate()
         {
             Validate(this, new HourPointConfigurationsValidator());
         }
+
+        private bool IsTimeValid(TimeSpan time)
+            => time > TimeSpan.MinValue && (time.Hours <= 23 && time.Minutes <= 59);
     }
 }

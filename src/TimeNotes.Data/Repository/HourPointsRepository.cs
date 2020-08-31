@@ -40,7 +40,7 @@ namespace TimeNotes.Data.Repository
             => await _context.TimeEntries.ToListAsync();
 
         public async Task<HourPoints> GetHourPointsById(Guid hourPointsId)
-            => await _context.HourPoints.SingleOrDefaultAsync(s => s.Id.Equals(hourPointsId));
+            => await _context.HourPoints.Include(t => t.TimeEntries).SingleOrDefaultAsync(s => s.Id.Equals(hourPointsId));
 
         public async Task<IEnumerable<HourPoints>> GetHourPointsWhere(Func<HourPoints, bool> predicate)
             => await Task.FromResult(_context.HourPoints.Where(predicate));

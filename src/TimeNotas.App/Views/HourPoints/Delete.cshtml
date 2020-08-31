@@ -21,6 +21,8 @@
     
     <form asp-action="Delete">
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.HourPointsId)
+        @Html.HiddenFor(model => model.DateHourPointed)
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using TimeNotes.Domain;
 using TimeNotes.Domain.Data.Interfaces;
@@ -31,9 +30,9 @@ namespace TimeNotes.Data.Repository
         public async Task<HourPointConfigurations> GetHourPointConfigurationsByUserId(Guid userId)
             => await _context.HourPointConfigurations.FirstOrDefaultAsync(f => f.UserId.Equals(userId));
 
-        public void RemoveHourPointConfiguration(HourPointConfigurations hourPointConfigurations)
+        public void UpdateHourPointConfiguration(HourPointConfigurations hourPointConfigurations)
         {
-            _context.HourPointConfigurations.Remove(hourPointConfigurations);
+            _context.HourPointConfigurations.Update(hourPointConfigurations);
         }
 
         public void Dispose()

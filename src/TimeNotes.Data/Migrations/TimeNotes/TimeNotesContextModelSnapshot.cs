@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimeNotes.Data;
 
-namespace TimeNotes.Data.Migrations
+namespace TimeNotes.Data.Migrations.TimeNotes
 {
     [DbContext(typeof(TimeNotesContext))]
     partial class TimeNotesContextModelSnapshot : ModelSnapshot

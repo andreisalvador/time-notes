@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace TimeNotes.Data.Migrations.ApplicationDb
+namespace TimeNotes.Data.Migrations
 {
     public partial class Initial : Migration
     {

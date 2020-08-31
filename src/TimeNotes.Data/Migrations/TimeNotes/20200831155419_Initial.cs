@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TimeNotes.Data.Migrations
+namespace TimeNotes.Data.Migrations.TimeNotes
 {
     public partial class Initial : Migration
     {
@@ -42,7 +42,7 @@ namespace TimeNotes.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    HourPointed = table.Column<TimeSpan>(nullable: false),
+                    DateHourPointed = table.Column<DateTime>(nullable: false),
                     HourPointsId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>

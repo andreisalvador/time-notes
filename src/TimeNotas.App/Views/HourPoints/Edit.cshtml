@@ -12,7 +12,8 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @Html.HiddenFor(model => model.Id)            
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.HourPointsId)
             <div class="form-group">
                 <label asp-for="DateHourPointed" class="control-label"></label>
                 <input asp-for="DateHourPointed" class="form-control" />

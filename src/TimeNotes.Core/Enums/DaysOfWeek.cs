@@ -1,16 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
+using TimeNotes.Core.Attributes;
 
 namespace TimeNotes.Core.Enums
 {
     [Flags]
     public enum DaysOfWeek
     {
-        [Description("Working day")]
+        [EnumDescription("Working day", "1")]
         WorkingDay = 1,
-        [Description("Weekend")]
-        Weekend,
-        [Description("All days")]
-        AllDay = WorkingDay + Weekend
+        [EnumDescription("Weekend", "2")]
+        Weekend = 2,
+        [EnumDescription("All days", "4")]
+        AllDays = 4
     }
 }

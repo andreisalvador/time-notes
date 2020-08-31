@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimeNotes.Data;
 
-namespace TimeNotes.Data.Migrations
+namespace TimeNotes.Data.Migrations.TimeNotes
 {
     [DbContext(typeof(TimeNotesContext))]
-    [Migration("20200828183451_Initial")]
+    [Migration("20200831155419_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,8 +73,8 @@ namespace TimeNotes.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<TimeSpan>("HourPointed")
-                        .HasColumnType("interval");
+                    b.Property<DateTime>("DateHourPointed")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<Guid>("HourPointsId")
                         .HasColumnType("uuid");

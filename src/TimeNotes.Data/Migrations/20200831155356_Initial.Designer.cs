@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimeNotas.App.Data;
 
-namespace TimeNotes.Data.Migrations.ApplicationDb
+namespace TimeNotes.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200828184218_Initial")]
+    [Migration("20200831155356_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

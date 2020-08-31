@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,21 +13,24 @@ using TimeNotes.Domain.Services;
 
 namespace TimeNotas.App.Controllers
 {
+    //[Authorize]
     public class HourPointsController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IMapper _mapper;
         private readonly HourPointsServices _hourPointsServices;
         private readonly IHourPointsRepository _hourPointsRepository;
-        private static List<TimeEntryModel> apontamentos = new List<TimeEntryModel>();
+        private readonly IHourPointConfigurationsRepository _hourPointConfigurationsRepository;
 
         public HourPointsController(HourPointsServices hourPointsServices,
             IHourPointsRepository hourPointsRepository,
+            IHourPointConfigurationsRepository hourPointConfigurationsRepository,
             UserManager<IdentityUser> userManager,
             IMapper mapper)
         {
             _hourPointsServices = hourPointsServices;
             _hourPointsRepository = hourPointsRepository;
+            _hourPointConfigurationsRepository = hourPointConfigurationsRepository;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -34,6 +38,11 @@ namespace TimeNotas.App.Controllers
         public async Task<IActionResult> Index()
         {
             IdentityUser identityUser = await _userManager.GetUserAsync(User);
+
+            var config = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
+
+            if (config is null)
+                return RedirectToAction("Create", "HourPointConfigurations");
 
             IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetAllHourPointsWithTimeEntries(Guid.Parse(identityUser.Id));
             // List<HourPointsModel> userHourPointsModel = _mapper.Map<List<HourPointsModel>>(userHourPoints);
@@ -86,7 +95,7 @@ namespace TimeNotas.App.Controllers
             {
                 TimeEntry timeEntry = await _hourPointsRepository.GetTimeEntryById(timeEntryModel.Id);
 
-                timeEntry.ChangeDateHourPointed(timeEntry.DateHourPointed);
+                timeEntry.ChangeDateHourPointed(timeEntryModel.DateHourPointed);
 
                 _hourPointsRepository.UpdateTimeEntry(timeEntry);
 
@@ -115,14 +124,15 @@ namespace TimeNotas.App.Controllers
         {
             try
             {
-                _hourPointsRepository.RemoveTimeEntry(_mapper.Map<TimeEntry>(timeEntryModel));
-                await _hourPointsRepository.Commit();
+                IdentityUser identityUser = await _userManager.GetUserAsync(User);                
+
+                await _hourPointsServices.RemoveTimeEntryFromHourPoints(Guid.Parse(identityUser.Id), timeEntryModel.Id);
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(timeEntryModel);
             }
         }
     }

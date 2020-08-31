@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TimeNotes.Domain.Data.Interfaces;
 
@@ -39,6 +37,24 @@ namespace TimeNotes.Domain.Services
             }
 
             _hourPointsRepository.AddTimeEntry(timeEntry);
+            await _hourPointsRepository.Commit();
+        }
+
+        public async Task RemoveTimeEntryFromHourPoints(Guid userId, Guid timeEntryId)
+        {
+            TimeEntry timeEntry = await _hourPointsRepository.GetTimeEntryById(timeEntryId);
+            HourPoints hourPoints = await _hourPointsRepository.GetHourPointsById(timeEntry.HourPointsId);
+            HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(userId);
+
+            hourPoints.RemoveTimeEntry(timeEntry, hourPointConfigurations);
+
+            _hourPointsRepository.RemoveTimeEntry(timeEntry);
+
+            if (!hourPoints.TimeEntries.Any())
+                _hourPointsRepository.RemoveHourPoints(hourPoints);
+            else
+                _hourPointsRepository.UpdateHourPoints(hourPoints);
+
             await _hourPointsRepository.Commit();
         }
     }

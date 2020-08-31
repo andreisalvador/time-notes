@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2B7C907B-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F971B3FA-E201-419E-A1A6-5414B8BD8F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeNotes.Domain", "..\src\TimeNotes.Domain\TimeNotes.Domain.csproj", "{14F7F392-1CCE-4A6D-83A3-4C73D182D06E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Domain", "..\src\TimeNotes.Domain\TimeNotes.Domain.csproj", "{14F7F392-1CCE-4A6D-83A3-4C73D182D06E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{095699B0-4EC4-43C6-961B-238A00830EF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeNotes.Core", "..\src\TimeNotes.Core\TimeNotes.Core.csproj", "{8703C458-5CEB-4E1C-88B4-2752373A6913}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Core", "..\src\TimeNotes.Core\TimeNotes.Core.csproj", "{8703C458-5CEB-4E1C-88B4-2752373A6913}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeNotes.Data", "..\src\TimeNotes.Data\TimeNotes.Data.csproj", "{6AF6F7BD-C5FD-48D2-8BC5-7A116E2AF443}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Data", "..\src\TimeNotes.Data\TimeNotes.Data.csproj", "{6AF6F7BD-C5FD-48D2-8BC5-7A116E2AF443}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A5938943-CB96-4ED3-8BC6-B8DB4B7F4E64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
