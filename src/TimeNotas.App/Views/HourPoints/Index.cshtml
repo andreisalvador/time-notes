@@ -12,6 +12,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Action</th>
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
@@ -27,14 +28,18 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td style="width: 5%; text-align: center;">
+                    <a style="color: darkred" href="@Url.Action("DeleteHourPoints", new { hourPointsId = item.Id })"><i title="Delete" class="fas fa-trash-alt"></i></a>
+                    <a href="@Url.Action("RecalculateTimes", new { hourPointsId = item.Id })"><i title="Recalculate times" class="fas fa-redo"></i></a>
+                </td>
                 <td title="@item.Date.DayOfWeek.ToString()">
                     @item.Date.ToString("dd/MM/yyyy")
                 </td>
                 <td>
-                    @item.ExtraTime.ToString(@"hh\:mm") <a href="@Url.Action("RecalculateTimes", new { hourPointsId = item.Id })"><i title="Recalculate" class="fas fa-redo"></i></a>
+                    @item.ExtraTime.ToString(@"hh\:mm")
                 </td>
                 <td>
-                    @item.MissingTime.ToString(@"hh\:mm") <a href="@Url.Action("RecalculateTimes", new { hourPointsId = item.Id })"><i title="Recalculate" class="fas fa-redo"></i></a>
+                    @item.MissingTime.ToString(@"hh\:mm")
                 </td>
                 @foreach (var timeEntry in item.TimeEntries.OrderBy(time => time.DateHourPointed))
                 {

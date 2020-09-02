@@ -104,16 +104,24 @@ namespace TimeNotas.App.Controllers
                 return View();
             }
         }
+        
+        public async Task<IActionResult> DeleteHourPoints(Guid hourPointsId)
+        {
+            HourPoints hourPoints = await _hourPointsRepository.GetHourPointsById(hourPointsId);
 
-        // GET: ApontamentosController/Delete/5
+            _hourPointsRepository.RemoveHourPoints(hourPoints);
+            await _hourPointsRepository.Commit();
+
+            return RedirectToAction(nameof(Index));
+        }
+
         public async Task<IActionResult> Delete(Guid timeEntryId)
         {
             TimeEntry timeEntry = await _hourPointsRepository.GetTimeEntryById(timeEntryId);
 
             return View(_mapper.Map<TimeEntryModel>(timeEntry));
         }
-
-        // POST: ApontamentosController/Delete/5
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(TimeEntryModel timeEntryModel)
@@ -138,7 +146,7 @@ namespace TimeNotas.App.Controllers
 
             await _hourPointsServices.RecalculeExtraTimeAndMissingTime(hourPointsId, Guid.Parse(identityUser.Id));
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }
