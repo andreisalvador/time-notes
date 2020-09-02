@@ -39,7 +39,7 @@ namespace TimeNotas.App.Extensions
         private static void AddIdentity(IServiceCollection services, IConfiguration configuration)
         {   
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(@$"{Environment.GetEnvironmentVariable("DATABASE_URL")}"));
+                options.UseNpgsql(@"User ID = avycvcypeqolyt;Password=8a3055e9720308926268373a5cd19d710b57ce7c5bbf87a480624d0453b54665;Server=ec2-3-91-139-25.compute-1.amazonaws.com;Port=5432;Database=d1lmn1982hg9ok;"));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
         }
@@ -47,7 +47,7 @@ namespace TimeNotas.App.Extensions
         private static void AddContexts(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TimeNotesContext>(options =>
-            options.UseNpgsql(@$"{Environment.GetEnvironmentVariable("DATABASE_URL")}"));
+            options.UseNpgsql(@"User ID = avycvcypeqolyt;Password=8a3055e9720308926268373a5cd19d710b57ce7c5bbf87a480624d0453b54665;Server=ec2-3-91-139-25.compute-1.amazonaws.com;Port=5432;Database=d1lmn1982hg9ok;"));
 
             services.AddScoped<TimeNotesContext>();
         }
