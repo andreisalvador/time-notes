@@ -27,7 +27,7 @@ namespace TimeNotas.App
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -40,12 +40,6 @@ namespace TimeNotas.App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            var logger = loggerFactory.CreateLogger<Startup>();
-
-            logger.LogInformation("**********************************************************");
-            logger.LogInformation($"PG: {Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")}");
-            logger.LogInformation("**********************************************************");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
