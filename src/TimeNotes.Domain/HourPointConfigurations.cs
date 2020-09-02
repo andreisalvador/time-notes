@@ -8,6 +8,7 @@ namespace TimeNotes.Domain
 {
     public class HourPointConfigurations : Entity<HourPointConfigurations>, IAggregateRoot
     {
+        //Teste
         public DaysOfWeek WorkDays { get; private set; }
         public TimeSpan OfficeHour { get; private set; }
         public TimeSpan LunchTime { get; private set; }
