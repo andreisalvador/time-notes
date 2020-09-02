@@ -4,17 +4,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using TimeNotas.App.Extensions;
 
 namespace TimeNotas.App
 {
     public class Startup
     {
-        private readonly ILogger _logger;
-        public Startup(IConfiguration configuration, ILogger logger)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -22,14 +21,13 @@ namespace TimeNotas.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            _logger.LogInformation("Chamou config");
-            services.AddServices(Configuration, _logger);
+            services.AddServices(Configuration);
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -42,6 +40,13 @@ namespace TimeNotas.App
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            var logger = loggerFactory.CreateLogger<Startup>();
+
+            logger.LogInformation("**********************************************************");
+            logger.LogInformation($"PG: {Environment.GetEnvironmentVariable("DATABASE_URL")}");
+            logger.LogInformation("**********************************************************");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

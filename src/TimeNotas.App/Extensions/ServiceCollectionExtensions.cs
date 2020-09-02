@@ -17,10 +17,10 @@ namespace TimeNotas.App.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddServices(this IServiceCollection services, IConfiguration configuration, ILogger logger)
+        public static void AddServices(this IServiceCollection services, IConfiguration configuration)
         {
             AddContexts(services, configuration);
-            AddIdentity(services, configuration, logger);
+            AddIdentity(services, configuration);
             AddRepositories(services);
             AddMappings(services);
             AddDomainServices(services);
@@ -36,11 +36,8 @@ namespace TimeNotas.App.Extensions
             services.AddAutoMapper(new Assembly[] { typeof(TimeEntryProfile).Assembly }, ServiceLifetime.Singleton);
         }
 
-        private static void AddIdentity(IServiceCollection services, IConfiguration configuration, ILogger logger)
+        private static void AddIdentity(IServiceCollection services, IConfiguration configuration)
         {
-            logger.LogInformation("Chamou Identity");
-            logger.LogInformation($"PG: {Environment.GetEnvironmentVariable("DATABASE_URL")}");
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
