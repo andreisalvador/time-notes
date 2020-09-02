@@ -3,15 +3,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using TimeNotas.App.Extensions;
 
 namespace TimeNotas.App
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILogger _logger;
+        public Startup(IConfiguration configuration, ILogger logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -19,7 +22,8 @@ namespace TimeNotas.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddServices(Configuration);
+            _logger.LogInformation("Chamou config");
+            services.AddServices(Configuration, _logger);
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
