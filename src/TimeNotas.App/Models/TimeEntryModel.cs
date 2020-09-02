@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TimeNotes.Core.Extensions;
 
 namespace TimeNotas.App.Models
 {
@@ -10,7 +11,7 @@ namespace TimeNotas.App.Models
 
         [Required(ErrorMessage = "The date and hour is required")]
         [DataType(DataType.DateTime)]
-        public DateTime DateHourPointed { get; set; } = DateTime.Now.ToLocalTime();
+        public DateTime DateHourPointed { get; set; } = DateTime.Now.ToBrazilianDateTime();
 
         public override string ToString()
             => DateHourPointed.ToShortTimeString();
