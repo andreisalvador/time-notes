@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using TimeNotas.App.Extensions;
 
@@ -13,7 +12,7 @@ namespace TimeNotas.App
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration;            
         }
 
         public IConfiguration Configuration { get; }
@@ -33,6 +32,7 @@ namespace TimeNotas.App
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                Environment.SetEnvironmentVariable("DATABASE_CONNECTION_STRING", Configuration.GetConnectionString("DefaultConnection"));
             }
             else
             {

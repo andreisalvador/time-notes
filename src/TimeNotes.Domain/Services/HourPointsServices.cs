@@ -57,5 +57,18 @@ namespace TimeNotes.Domain.Services
 
             await _hourPointsRepository.Commit();
         }
+
+
+        public async Task UpdateTimeEntryDateHourPointed(Guid hourPointsId, Guid timeEntryId, Guid userId, DateTime newDateHourPointed)
+        {
+            HourPoints hourPoints = await _hourPointsRepository.GetHourPointsById(hourPointsId);
+            HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(userId);
+
+            hourPoints.ChangeTimeEntryDateHourPointed(newDateHourPointed, timeEntryId, hourPointConfigurations);
+
+            _hourPointsRepository.UpdateHourPoints(hourPoints);
+
+            await _hourPointsRepository.Commit();
+        }
     }
 }

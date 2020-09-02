@@ -44,6 +44,18 @@ namespace TimeNotes.Domain
             }
         }
 
+        public void ChangeTimeEntryDateHourPointed(DateTime newDateHourPointed, Guid timeEntryId, HourPointConfigurations hourPointConfigurations)
+        {
+            TimeEntry timeEntry = _timeEntries.SingleOrDefault(time => time.Id.Equals(timeEntryId));
+
+            if (timeEntry is null)
+                throw new ArgumentException("The time entry wasn't found in database.");
+
+            timeEntry.ChangeDateHourPointed(newDateHourPointed);
+
+            RecalculateTimes(hourPointConfigurations);
+        }
+
         public void RemoveTimeEntry(TimeEntry timeEntry, HourPointConfigurations hourPointConfigurations)
         {
             _timeEntries.RemoveAll(time => time.Id.Equals(timeEntry.Id));

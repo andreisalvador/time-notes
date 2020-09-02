@@ -93,13 +93,9 @@ namespace TimeNotas.App.Controllers
         {
             try
             {
-                TimeEntry timeEntry = await _hourPointsRepository.GetTimeEntryById(timeEntryModel.Id);
+                IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
-                timeEntry.ChangeDateHourPointed(timeEntryModel.DateHourPointed);
-
-                _hourPointsRepository.UpdateTimeEntry(timeEntry);
-
-                await _hourPointsRepository.Commit();
+                await _hourPointsServices.UpdateTimeEntryDateHourPointed(timeEntryModel.HourPointsId, timeEntryModel.Id, Guid.Parse(identityUser.Id), timeEntryModel.DateHourPointed);
 
                 return RedirectToAction(nameof(Index));
             }
