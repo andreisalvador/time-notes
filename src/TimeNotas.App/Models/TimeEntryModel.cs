@@ -11,7 +11,7 @@ namespace TimeNotas.App.Models
 
         [Required(ErrorMessage = "The date and hour is required")]
         [DataType(DataType.DateTime)]
-        public DateTime DateHourPointed { get; set; } = DateTime.Now.ToBrazilianDateTime();
+        public DateTime DateHourPointed { get; set; } = DateTime.Now;
 
         public override string ToString()
             => DateHourPointed.ToShortTimeString();
