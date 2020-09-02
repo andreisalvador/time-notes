@@ -44,7 +44,7 @@ namespace TimeNotas.App
             var logger = loggerFactory.CreateLogger<Startup>();
 
             logger.LogInformation("**********************************************************");
-            logger.LogInformation($"PG: {Environment.GetEnvironmentVariable("DATABASE_URL")}");
+            logger.LogInformation($"PG: {Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")}");
             logger.LogInformation("**********************************************************");
 
             app.UseHttpsRedirection();
