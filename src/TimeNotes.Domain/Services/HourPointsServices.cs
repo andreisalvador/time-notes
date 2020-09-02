@@ -70,5 +70,17 @@ namespace TimeNotes.Domain.Services
 
             await _hourPointsRepository.Commit();
         }
+
+        public async Task RecalculeExtraTimeAndMissingTime(Guid hourPointsId, Guid userId)
+        {
+            HourPoints hourPoints = await _hourPointsRepository.GetHourPointsById(hourPointsId);
+            HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(userId);
+
+            hourPoints.CalculateExtraTime(hourPointConfigurations);
+            hourPoints.CalculateMissingTime(hourPointConfigurations);
+
+            _hourPointsRepository.UpdateHourPoints(hourPoints);
+            await _hourPointsRepository.Commit();
+        }
     }
 }

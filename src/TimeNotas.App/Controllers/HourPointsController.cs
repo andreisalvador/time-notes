@@ -131,5 +131,14 @@ namespace TimeNotas.App.Controllers
                 return View(timeEntryModel);
             }
         }
+
+        public async Task<IActionResult> RecalculateTimes(Guid hourPointsId)
+        {
+            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+
+            await _hourPointsServices.RecalculeExtraTimeAndMissingTime(hourPointsId, Guid.Parse(identityUser.Id));
+
+            return RedirectToAction("Index");
+        }
     }
 }

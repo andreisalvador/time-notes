@@ -31,10 +31,10 @@
                     @item.Date.ToString("dd/MM/yyyy")
                 </td>
                 <td>
-                    @item.ExtraTime.ToString(@"hh\:mm")
+                    @item.ExtraTime.ToString(@"hh\:mm") <a href="@Url.Action("RecalculateTimes", new { hourPointsId = item.Id })"><i title="Recalculate" class="fas fa-redo"></i></a>
                 </td>
                 <td>
-                    @item.MissingTime.ToString(@"hh\:mm")
+                    @item.MissingTime.ToString(@"hh\:mm") <a href="@Url.Action("RecalculateTimes", new { hourPointsId = item.Id })"><i title="Recalculate" class="fas fa-redo"></i></a>
                 </td>
                 @foreach (var timeEntry in item.TimeEntries.OrderBy(time => time.DateHourPointed))
                 {
