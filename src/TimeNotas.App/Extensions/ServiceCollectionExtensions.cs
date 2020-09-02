@@ -37,9 +37,9 @@ namespace TimeNotas.App.Extensions
         }
 
         private static void AddIdentity(IServiceCollection services, IConfiguration configuration)
-        {
+        {   
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL")));
+                options.UseNpgsql(@$"{Environment.GetEnvironmentVariable("DATABASE_URL")}"));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
         }
@@ -47,7 +47,7 @@ namespace TimeNotas.App.Extensions
         private static void AddContexts(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TimeNotesContext>(options =>
-            options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL")));
+            options.UseNpgsql(@$"{Environment.GetEnvironmentVariable("DATABASE_URL")}"));
 
             services.AddScoped<TimeNotesContext>();
         }
