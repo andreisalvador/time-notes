@@ -13,7 +13,7 @@ using TimeNotes.Domain.Services;
 
 namespace TimeNotas.App.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HourPointsController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

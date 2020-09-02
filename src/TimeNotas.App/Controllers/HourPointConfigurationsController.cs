@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TimeNotas.App.Models;
 using TimeNotes.Domain;
@@ -11,6 +10,7 @@ using TimeNotes.Domain.Data.Interfaces;
 
 namespace TimeNotas.App.Controllers
 {
+    [Authorize]
     public class HourPointConfigurationsController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
