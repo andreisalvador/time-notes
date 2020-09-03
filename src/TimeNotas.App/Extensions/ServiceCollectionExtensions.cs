@@ -16,7 +16,7 @@ namespace TimeNotas.App.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddServices(this IServiceCollection services)
         {
             AddContexts(services);
             AddIdentity(services);
