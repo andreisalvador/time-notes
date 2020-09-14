@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
 using TimeNotas.App.Data;
@@ -16,10 +18,10 @@ namespace TimeNotas.App.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddServices(this IServiceCollection services)
+        public static void AddServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            AddContexts(services);
-            AddIdentity(services);
+            AddContexts(services, configuration, webHostEnvironment);
+            AddIdentity(services, configuration, webHostEnvironment);
             AddRepositories(services);
             AddMappings(services);
             AddDomainServices(services);
@@ -35,18 +37,18 @@ namespace TimeNotas.App.Extensions
             services.AddAutoMapper(new Assembly[] { typeof(TimeEntryProfile).Assembly }, ServiceLifetime.Singleton);
         }
 
-        private static void AddIdentity(IServiceCollection services)
+        private static void AddIdentity(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {   
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                options.UseNpgsql(webHostEnvironment.IsDevelopment() ? configuration.GetConnectionString("DefaultConnection") : Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 
-        private static void AddContexts(IServiceCollection services)
+        private static void AddContexts(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             services.AddDbContext<TimeNotesContext>(options =>
-            options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
+            options.UseNpgsql(webHostEnvironment.IsDevelopment() ? configuration.GetConnectionString("DefaultConnection") : Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
 
             services.AddScoped<TimeNotesContext>();
         }

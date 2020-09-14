@@ -4,15 +4,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Security.AccessControl;
 using TimeNotas.App.Extensions;
 
 namespace TimeNotas.App
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
-            Configuration = configuration;            
+            Configuration = configuration;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -20,7 +23,7 @@ namespace TimeNotas.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddServices();
+            services.AddServices(Configuration, _webHostEnvironment);
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

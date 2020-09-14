@@ -11,8 +11,6 @@ namespace TimeNotas.App.ProfileMaps
         {
             CreateMap<TimeEntryModel, TimeEntry>();
             CreateMap<TimeEntryModel, TimeEntry>().ReverseMap();
-            CreateMap<List<TimeEntryModel>, List<TimeEntry>>();
-            CreateMap<List<TimeEntryModel>, List<TimeEntry>>().ReverseMap();
         }
     }
 }

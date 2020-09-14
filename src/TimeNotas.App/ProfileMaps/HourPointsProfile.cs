@@ -14,8 +14,6 @@ namespace TimeNotas.App.ProfileMaps
         {
             CreateMap<HourPoints, HourPointsModel>();
             CreateMap<HourPoints, HourPointsModel>().ReverseMap();
-            CreateMap<IEnumerable<HourPoints>, List<HourPointsModel>>();
-            CreateMap<IEnumerable<HourPoints>, List<HourPointsModel>>().ReverseMap();
         }
     }
 }

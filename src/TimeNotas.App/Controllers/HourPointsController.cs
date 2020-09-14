@@ -45,21 +45,10 @@ namespace TimeNotas.App.Controllers
                 return RedirectToAction("Create", "HourPointConfigurations");
 
             IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetAllHourPointsWithTimeEntries(Guid.Parse(identityUser.Id));
-            // List<HourPointsModel> userHourPointsModel = _mapper.Map<List<HourPointsModel>>(userHourPoints);
 
-            List<HourPointsModel> userHourPointsModel = new List<HourPointsModel>();
-            foreach (var item in userHourPoints)
-            {
-                userHourPointsModel.Add(new HourPointsModel(item.TimeEntries.Select(s => new TimeEntryModel() { DateHourPointed = s.DateHourPointed, Id = s.Id }).ToList())
-                {
-                    Date = item.Date,
-                    ExtraTime = item.ExtraTime,
-                    MissingTime = item.MissingTime,
-                    Id = item.Id
-                });
-            }
+            IEnumerable<HourPointsModel> userHourPointsModel = _mapper.Map<IEnumerable<HourPointsModel>>(userHourPoints);
 
-            return View(userHourPointsModel);
+            return View(userHourPointsModel.OrderBy(h => h.Date));
         }
 
         [HttpPost]

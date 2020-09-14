@@ -9,6 +9,9 @@ namespace TimeNotas.App.Models
 {
     public class HourPointsModel
     {
+        public HourPointsModel() { }
+
+        [Key]
         public Guid Id { get; set; }
 
         [DisplayName("Date")]
