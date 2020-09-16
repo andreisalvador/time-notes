@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimeNotes.Data;
@@ -9,9 +10,10 @@ using TimeNotes.Data;
 namespace TimeNotes.Data.Migrations.TimeNotes
 {
     [DbContext(typeof(TimeNotesContext))]
-    partial class TimeNotesContextModelSnapshot : ModelSnapshot
+    [Migration("20200915230455_Added_Tolerance_Time_Configuraiton")]
+    partial class Added_Tolerance_Time_Configuraiton
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +31,6 @@ namespace TimeNotes.Data.Migrations.TimeNotes
                         .HasColumnType("interval");
 
                     b.Property<TimeSpan>("OfficeHour")
-                        .HasColumnType("interval");
-
-                    b.Property<TimeSpan>("StartWorkTime")
                         .HasColumnType("interval");
 
                     b.Property<TimeSpan>("ToleranceTime")

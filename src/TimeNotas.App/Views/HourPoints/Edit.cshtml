@@ -1,12 +1,9 @@
 ﻿@model TimeNotas.App.Models.TimeEntryModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Hour point";
 }
-
-<h1>Edit</h1>
-
-<h4>Apontamento</h4>
+<h4>@ViewData["Title"]</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -21,14 +18,11 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                @Html.ActionLink("Delete", "Delete", new { timeEntryId = Model.Id }, new { @class = "btn btn-danger" })
+                <a class="btn btn-info" asp-action="Index">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a> | 
-    @Html.ActionLink("Delete", "Delete", new { timeEntryId = Model.Id })
 </div>
 
 @section Scripts {

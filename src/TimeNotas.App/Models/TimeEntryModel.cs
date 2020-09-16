@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
-using TimeNotes.Core.Extensions;
 
 namespace TimeNotas.App.Models
 {
@@ -17,6 +16,7 @@ namespace TimeNotas.App.Models
 
         [Required(ErrorMessage = "The date and hour is required")]
         [DataType(DataType.DateTime)]
+        [System.ComponentModel.DisplayName("Point")]
         public DateTime DateHourPointed { get; set; } = DateTime.Now;
 
         public override string ToString()

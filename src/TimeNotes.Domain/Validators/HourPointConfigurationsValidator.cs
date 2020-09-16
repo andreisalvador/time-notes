@@ -15,6 +15,14 @@ namespace TimeNotes.Domain.Validators
                 .NotEqual(TimeSpan.MinValue)
                 .WithMessage("You must to inform the office hour.");
 
+            RuleFor(h => h.StartWorkTime)
+               .NotEqual(TimeSpan.MinValue)
+               .WithMessage("You must to inform the start work time.");
+
+            RuleFor(h => h.ToleranceTime)
+                .NotEqual(TimeSpan.MinValue)
+                .WithMessage("You must to inform the tolerance time.");
+
             RuleFor(h => h.WorkDays)
                 .IsInEnum()
                 .WithMessage("Days of work is not valid.");

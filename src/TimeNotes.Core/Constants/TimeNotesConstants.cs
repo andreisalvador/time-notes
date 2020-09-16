@@ -1,7 +1,9 @@
-﻿namespace TimeNotes.Core.Constants
+﻿using System;
+
+namespace TimeNotes.Core.Constants
 {
     public class TimeNotesConstants
     {
-        public const byte MAX_NUMBER_OF_HOUR_POINTS = 8;
+        public const byte NUMBER_OF_TIME_ENTRY_BY_DAY = 4;
     }
 }

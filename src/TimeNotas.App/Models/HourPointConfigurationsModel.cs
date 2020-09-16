@@ -11,6 +11,9 @@ namespace TimeNotas.App.Models
 {
     public class HourPointConfigurationsModel
     {
+        public HourPointConfigurationsModel() { }
+
+        [Key]
         public Guid Id { get; set; }
 
         [Display(Name = "Work days")]
@@ -21,6 +24,12 @@ namespace TimeNotas.App.Models
 
         [Display(Name = "Lunch time")]
         public TimeSpan LunchTime { get; set; }
+
+        [Display(Name = "Start work time")]
+        public TimeSpan StartWorkTime { get; set; }
+
+        [Display(Name = "Tolerance time")]
+        public TimeSpan ToleranceTime { get; set; }
 
         public IEnumerable<SelectListItem> GetWorkDaysDescriptions()
         {

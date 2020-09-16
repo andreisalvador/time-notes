@@ -8,18 +8,21 @@ namespace TimeNotes.Domain
 {
     public class HourPointConfigurations : Entity<HourPointConfigurations>, IAggregateRoot
     {
-        //Teste
         public DaysOfWeek WorkDays { get; private set; }
         public TimeSpan OfficeHour { get; private set; }
         public TimeSpan LunchTime { get; private set; }
+        public TimeSpan ToleranceTime { get; private set; }
+        public TimeSpan StartWorkTime { get; private set; }
         public Guid UserId { get; private set; }
 
-        
-        public HourPointConfigurations(DaysOfWeek workDays, TimeSpan officeHour, TimeSpan lunchTime, Guid userId)
+
+        public HourPointConfigurations(DaysOfWeek workDays, TimeSpan officeHour, TimeSpan lunchTime, TimeSpan startWorkTime, TimeSpan toleranceTime, Guid userId)
         {
             WorkDays = workDays;
             OfficeHour = officeHour;
             LunchTime = lunchTime;
+            StartWorkTime = startWorkTime;
+            ToleranceTime = toleranceTime;
             UserId = userId;
             Validate();
         }
@@ -33,14 +36,25 @@ namespace TimeNotes.Domain
         public void ChangeLunchTime(TimeSpan lunchTime)
         {
             if (IsTimeValid(lunchTime))
-                LunchTime = lunchTime;            
+                LunchTime = lunchTime;
         }
-
 
         public void ChangeOfficeHour(TimeSpan officeHour)
         {
             if (IsTimeValid(officeHour))
                 OfficeHour = officeHour;
+        }
+
+        public void ChangeStartWorkTime(TimeSpan startWorkTime)
+        {
+            if (IsTimeValid(startWorkTime))
+                StartWorkTime = startWorkTime;
+        }
+
+        public void ChangeToleranceTime(TimeSpan toleranceTime)
+        {
+            if (IsTimeValid(toleranceTime))
+                ToleranceTime = toleranceTime;
         }
 
         public override void Validate()

@@ -7,7 +7,7 @@ namespace TimeNotas.App.ProfileMaps
     public class HourPointConfigurationsProfile : Profile
     {
         public HourPointConfigurationsProfile()
-        {
+        {   
             CreateMap<HourPointConfigurations, HourPointConfigurationsModel>();
             CreateMap<HourPointConfigurations, HourPointConfigurationsModel>().ReverseMap();
         }

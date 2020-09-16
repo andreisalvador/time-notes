@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TimeNotas.App.Models;
 using TimeNotes.Domain;
@@ -31,7 +32,7 @@ namespace TimeNotas.App.Controllers
             IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
             HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser?.Id));
-            
+
             return View(_mapper.Map<HourPointConfigurationsModel>(hourPointConfigurations));
         }
 
@@ -50,9 +51,11 @@ namespace TimeNotas.App.Controllers
             {
                 IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
-                HourPointConfigurations hourPointConfigurations = new HourPointConfigurations(hourPointConfigurationsModel.WorkDays, 
-                    hourPointConfigurationsModel.OfficeHour, 
-                    hourPointConfigurationsModel.LunchTime, 
+                HourPointConfigurations hourPointConfigurations = new HourPointConfigurations(hourPointConfigurationsModel.WorkDays,
+                    hourPointConfigurationsModel.OfficeHour,
+                    hourPointConfigurationsModel.LunchTime,
+                    hourPointConfigurationsModel.StartWorkTime,
+                    hourPointConfigurationsModel.ToleranceTime,
                     Guid.Parse(identityUser.Id));
 
                 _hourPointConfigurationsRepository.AddHourPointConfiguration(hourPointConfigurations);
@@ -79,23 +82,22 @@ namespace TimeNotas.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(HourPointConfigurationsModel hourPointConfigurationsModel)
         {
-            try
-            {
-                HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsById(hourPointConfigurationsModel.Id);
 
-                hourPointConfigurations.ChangeWorkDays(hourPointConfigurationsModel.WorkDays);
-                hourPointConfigurations.ChangeLunchTime(hourPointConfigurationsModel.LunchTime);
-                hourPointConfigurations.ChangeOfficeHour(hourPointConfigurationsModel.OfficeHour);
-                
-                _hourPointConfigurationsRepository.UpdateHourPointConfiguration(hourPointConfigurations);
-                await _hourPointConfigurationsRepository.Commit();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.Values);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
+            HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsById(hourPointConfigurationsModel.Id);
+
+            hourPointConfigurations.ChangeWorkDays(hourPointConfigurationsModel.WorkDays);
+            hourPointConfigurations.ChangeLunchTime(hourPointConfigurationsModel.LunchTime);
+            hourPointConfigurations.ChangeOfficeHour(hourPointConfigurationsModel.OfficeHour);
+            hourPointConfigurations.ChangeStartWorkTime(hourPointConfigurationsModel.StartWorkTime);
+            hourPointConfigurations.ChangeToleranceTime(hourPointConfigurationsModel.ToleranceTime);
+
+            _hourPointConfigurationsRepository.UpdateHourPointConfiguration(hourPointConfigurations);
+            await _hourPointConfigurationsRepository.Commit();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

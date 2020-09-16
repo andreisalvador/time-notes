@@ -7,9 +7,11 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">New point</a>
+    <a class="btn btn-info" asp-action="Create">New point</a>
+    <a class="btn btn-dark" asp-action="PointNow">Point now</a>
+    <a class="btn btn-secondary" asp-action="AutoGenerateTimeEntriesToday">Auto generate points today</a>
 </p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
             <th>Action</th>

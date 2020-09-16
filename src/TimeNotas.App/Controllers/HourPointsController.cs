@@ -51,6 +51,20 @@ namespace TimeNotas.App.Controllers
             return View(userHourPointsModel.OrderBy(h => h.Date));
         }
 
+        public async Task<IActionResult> AutoGenerateTimeEntriesToday()
+        {
+            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+
+            if (identityUser is null) throw new ArgumentException($"Usuário não encontrado na base de dados.");
+
+            await _hourPointsServices.AutoGenerateHourPointForTodayWithTimeEntries(Guid.Parse(identityUser.Id));
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> PointNow()
+            => await Create(new TimeEntryModel());
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(TimeEntryModel timeEntryModel)
@@ -93,7 +107,7 @@ namespace TimeNotas.App.Controllers
                 return View();
             }
         }
-        
+
         public async Task<IActionResult> DeleteHourPoints(Guid hourPointsId)
         {
             HourPoints hourPoints = await _hourPointsRepository.GetHourPointsById(hourPointsId);
@@ -110,14 +124,14 @@ namespace TimeNotas.App.Controllers
 
             return View(_mapper.Map<TimeEntryModel>(timeEntry));
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(TimeEntryModel timeEntryModel)
         {
             try
             {
-                IdentityUser identityUser = await _userManager.GetUserAsync(User);                
+                IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
                 await _hourPointsServices.RemoveTimeEntryFromHourPoints(Guid.Parse(identityUser.Id), timeEntryModel.Id);
 

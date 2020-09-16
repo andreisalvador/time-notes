@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimeNotes.Data;
@@ -9,9 +10,10 @@ using TimeNotes.Data;
 namespace TimeNotes.Data.Migrations.TimeNotes
 {
     [DbContext(typeof(TimeNotesContext))]
-    partial class TimeNotesContextModelSnapshot : ModelSnapshot
+    [Migration("20200916015331_Added_Start_Work_Time_Configuration")]
+    partial class Added_Start_Work_Time_Configuration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
