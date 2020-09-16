@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <Target Name="PrePublishTarget" AfterTargets="Publish">
+    <Exec Command="dotnet tool install dotnet-ef" />
     <Exec Command="dotnet ef database update" />
   </Target>
 
