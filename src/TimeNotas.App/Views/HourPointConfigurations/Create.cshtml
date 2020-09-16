@@ -17,22 +17,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="OfficeHour" class="control-label"></label>
-                <input asp-for="OfficeHour" class="form-control" />
+                <input type="time" asp-for="OfficeHour" class="form-control" min="06:00" />
                 <span asp-validation-for="OfficeHour" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LunchTime" class="control-label"></label>
-                <input asp-for="LunchTime" class="form-control" />
+                <input type="time" asp-for="LunchTime" class="form-control" min="01:00" />
                 <span asp-validation-for="LunchTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartWorkTime" class="control-label"></label>
-                <input asp-for="StartWorkTime" class="form-control" />
+                <input type="time" asp-for="StartWorkTime" class="form-control" min="06:00" />
                 <span asp-validation-for="StartWorkTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ToleranceTime" class="control-label"></label>
-                <input asp-for="ToleranceTime" class="form-control" />
+                <input type="time" asp-for="ToleranceTime" class="form-control" min="00:01" max="00:30" />
                 <span asp-validation-for="ToleranceTime" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -17,9 +17,11 @@ namespace TimeNotas.App.Models
         public DateTime Date { get; set; }
 
         [DisplayName("Extra time")]
+        [DataType(DataType.Time)]
         public TimeSpan ExtraTime { get; set; }
 
         [DisplayName("Missing time")]
+        [DataType(DataType.Time)]
         public TimeSpan MissingTime { get; set; }
 
         public List<TimeEntryModel> TimeEntries { get; set; }

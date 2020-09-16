@@ -20,15 +20,19 @@ namespace TimeNotas.App.Models
         public DaysOfWeek WorkDays { get; set; }
 
         [Display(Name = "Office hour")]
+        [DataType(DataType.Time)]
         public TimeSpan OfficeHour { get; set; }
 
         [Display(Name = "Lunch time")]
+        [DataType(DataType.Time)]
         public TimeSpan LunchTime { get; set; }
 
         [Display(Name = "Start work time")]
+        [DataType(DataType.Time)]
         public TimeSpan StartWorkTime { get; set; }
 
         [Display(Name = "Tolerance time")]
+        [DataType(DataType.Time)]        
         public TimeSpan ToleranceTime { get; set; }
 
         public IEnumerable<SelectListItem> GetWorkDaysDescriptions()
