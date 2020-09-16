@@ -14,4 +14,9 @@
     <ProjectReference Include="..\TimeNotes.Domain\TimeNotes.Domain.csproj" />
   </ItemGroup>
 
+  <Target Name="PrePublishTarget" AfterTargets="Publish">
+      <Exec Command="echo  &quot;Migrating Database ...&quot;" />
+      <Exec Command="dotnet-ef database update -context TimeNotesContext"/>
+  </Target>
+
 </Project>
