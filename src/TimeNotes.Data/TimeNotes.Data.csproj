@@ -12,6 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TimeNotes.Domain\TimeNotes.Domain.csproj" />
-  </ItemGroup> 
+  </ItemGroup>
 
 </Project>
