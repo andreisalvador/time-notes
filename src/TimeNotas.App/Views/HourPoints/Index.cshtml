@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<TimeNotas.App.Models.HourPointsModel>
+@using System.Linq; 
 
 @{
     ViewData["Title"] = "Hour Points";
@@ -15,7 +16,7 @@
     <div class="col-md-3"></div>
     <form asp-action="Index" class="col-md-4" method="get">
         <div class="input-group mb-3">
-            <input id="searchDate" name="searchDate" type="month" class="form-control"/>
+            <input id="searchDate" name="searchDate" type="month" class="form-control" />
             <div class="input-group-append">
                 <button class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</button>
             </div>
@@ -63,17 +64,13 @@
             </tr>
         }
     </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row">Totals</th>
+            <td></td>
+            <td>@TimeSpan.FromTicks(Model.Sum(s => s.ExtraTime.Ticks)).ToString(@"hh\:mm")</td>
+            <td>@TimeSpan.FromTicks(Model.Sum(s => s.MissingTime.Ticks)).ToString(@"hh\:mm")</td>
+        </tr>
+    </tfoot>
 </table>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>
-    function search() {
-        $.ajax({
-            type: "GET",
-            url: '@Url.Action("Search")',
-            data: { searchDate: $('#searchDate').val() },
-            error: function (e) {
-                console.log(e)
-            }
-        })
-    }
-</script>
