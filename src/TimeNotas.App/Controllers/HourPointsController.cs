@@ -39,7 +39,7 @@ namespace TimeNotas.App.Controllers
         public async Task<IActionResult> Index(DateTime? searchDate = null)
         {
             if (!searchDate.HasValue)
-                searchDate = DateTime.Now;
+                searchDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
             IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
