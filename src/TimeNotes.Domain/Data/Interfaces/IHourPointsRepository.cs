@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TimeNotes.Core.Data;
@@ -14,7 +15,7 @@ namespace TimeNotes.Domain.Data.Interfaces
         Task<HourPoints> GetHourPointsById(Guid hourPointsId);
         Task<IEnumerable<HourPoints>> GetAllHourPoints();
         Task<IEnumerable<HourPoints>> GetAllHourPointsWithTimeEntries(Guid userId);
-        Task<IEnumerable<HourPoints>> GetHourPointsWhere(Func<HourPoints, bool> predicate);
+        Task<IEnumerable<HourPoints>> GetHourPointsWhere(Expression<Func<HourPoints, bool>> predicate);
         Task<HourPoints> GetHourPointsWithTimeEntriesByDateAndUser(DateTime date, Guid userId);
 
         void AddTimeEntry(TimeEntry timeEntry);
@@ -22,6 +23,6 @@ namespace TimeNotes.Domain.Data.Interfaces
         void UpdateTimeEntry(TimeEntry timeEntry);
         Task<TimeEntry> GetTimeEntryById(Guid timeEntryId);
         Task<IEnumerable<TimeEntry>> GetAllTimeEntries();
-        Task<IEnumerable<TimeEntry>> GetTimeEntriesWhere(Func<TimeEntry, bool> predicate);
+        Task<IEnumerable<TimeEntry>> GetTimeEntriesWhere(Expression<Func<TimeEntry, bool>> predicate);
     }
 }

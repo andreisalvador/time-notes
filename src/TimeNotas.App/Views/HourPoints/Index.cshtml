@@ -6,11 +6,22 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a class="btn btn-info" asp-action="Create">New point</a>
-    <a class="btn btn-dark" asp-action="PointNow">Point now</a>
-    <a class="btn btn-secondary" asp-action="AutoGenerateTimeEntriesToday">Auto generate points today</a>
-</p>
+<div class="row">
+    <div class="col-md-5">
+        <a class="btn btn-info" asp-action="Create">New point</a>
+        <a class="btn btn-dark" asp-action="PointNow">Point now</a>
+        <a class="btn btn-secondary" asp-action="AutoGenerateTimeEntriesToday">Auto generate points today</a>
+    </div>
+    <div class="col-md-3"></div>
+    <form asp-action="Index" class="col-md-4" method="get">
+        <div class="input-group mb-3">
+            <input id="searchDate" name="searchDate" type="date" class="form-control"/>
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </form>
+</div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -53,3 +64,16 @@
         }
     </tbody>
 </table>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function search() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Search")',
+            data: { searchDate: $('#searchDate').val() },
+            error: function (e) {
+                console.log(e)
+            }
+        })
+    }
+</script>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TimeNotas.App.Models;
 using TimeNotes.Domain;
@@ -35,8 +36,11 @@ namespace TimeNotas.App.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? searchDate = null)
         {
+            if (!searchDate.HasValue)
+                searchDate = DateTime.Now;
+
             IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
             var config = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
@@ -44,11 +48,11 @@ namespace TimeNotas.App.Controllers
             if (config is null)
                 return RedirectToAction("Create", "HourPointConfigurations");
 
-            IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetAllHourPointsWithTimeEntries(Guid.Parse(identityUser.Id));
+            IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetHourPointsWhere(x => x.Date.Date.Equals(searchDate.GetValueOrDefault().Date) && x.UserId.Equals(Guid.Parse(identityUser.Id))); ;
 
             IEnumerable<HourPointsModel> userHourPointsModel = _mapper.Map<IEnumerable<HourPointsModel>>(userHourPoints);
 
-            return View(userHourPointsModel.OrderBy(h => h.Date));
+            return View(nameof(Index), userHourPointsModel.OrderBy(h => h.Date));
         }
 
         public async Task<IActionResult> AutoGenerateTimeEntriesToday()

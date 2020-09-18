@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TimeNotes.Domain;
 using TimeNotes.Domain.Data.Interfaces;
@@ -42,11 +43,11 @@ namespace TimeNotes.Data.Repository
         public async Task<HourPoints> GetHourPointsById(Guid hourPointsId)
             => await _context.HourPoints.Include(t => t.TimeEntries).SingleOrDefaultAsync(s => s.Id.Equals(hourPointsId));
 
-        public async Task<IEnumerable<HourPoints>> GetHourPointsWhere(Func<HourPoints, bool> predicate)
-            => await Task.FromResult(_context.HourPoints.Where(predicate));
+        public async Task<IEnumerable<HourPoints>> GetHourPointsWhere(Expression<Func<HourPoints, bool>> predicate)
+            => await Task.FromResult(_context.HourPoints.Where(predicate).Include(h => h.TimeEntries));
 
-        public async Task<IEnumerable<TimeEntry>> GetTimeEntriesWhere(Func<TimeEntry, bool> predicate)
-            => await Task.FromResult(_context.TimeEntries.Where(predicate));
+        public async Task<IEnumerable<TimeEntry>> GetTimeEntriesWhere(Expression<Func<TimeEntry, bool>> predicate)
+            => await Task.FromResult(_context.TimeEntries.Where(predicate).Include(t => t.HourPoints));
 
         public async Task<TimeEntry> GetTimeEntryById(Guid timeEntryId)
             => await _context.TimeEntries.SingleOrDefaultAsync(s => s.Id.Equals(timeEntryId));
