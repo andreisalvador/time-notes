@@ -48,7 +48,9 @@ namespace TimeNotas.App.Controllers
             if (config is null)
                 return RedirectToAction("Create", "HourPointConfigurations");
 
-            IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetHourPointsWhere(x => x.Date.Date.Equals(searchDate.GetValueOrDefault().Date) && x.UserId.Equals(Guid.Parse(identityUser.Id))); ;
+            DateTime lastDaySearchedMonth = new DateTime(searchDate.Value.Year, searchDate.Value.Month, DateTime.DaysInMonth(searchDate.Value.Year, searchDate.Value.Month));
+
+            IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetHourPointsWhere(x => (x.Date.Date >= searchDate.Value.Date && x.Date.Date <= lastDaySearchedMonth.Date) && x.UserId.Equals(Guid.Parse(identityUser.Id)));
 
             IEnumerable<HourPointsModel> userHourPointsModel = _mapper.Map<IEnumerable<HourPointsModel>>(userHourPoints);
 
