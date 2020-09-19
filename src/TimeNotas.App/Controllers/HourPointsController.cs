@@ -64,6 +64,11 @@ namespace TimeNotas.App.Controllers
         {
             IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
+            var config = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
+
+            if (config.StartWorkTime <= TimeSpan.Zero || config.ToleranceTime <= TimeSpan.Zero)
+                return RedirectToAction("Edit", "HourPointConfigurations", config);
+
             if (identityUser is null) throw new ArgumentException($"Usuário não encontrado na base de dados.");
 
             await _hourPointsServices.AutoGenerateHourPointForTodayWithTimeEntries(Guid.Parse(identityUser.Id));

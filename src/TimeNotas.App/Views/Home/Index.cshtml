@@ -1,8 +1,94 @@
-﻿@{
+﻿@model TimeNotas.App.Models.HomeDashboardViewModel
+@using TimeNotes.Core.Extensions;
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div class="container text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>There is your times from this month.</p>
+    <div class="row">
+        <div class="rounded col-md-4 card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Total extra time</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
+                <h3 class="card-text">@Model.TotalExtraTimeInMonth.ToFormattedStringTime()</h3>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+        <div class="rounded col-md-4 card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Total missing time</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
+                <h3 style="@(Model.TotalMissingTimeInMonth.Ticks > 0 ? "color:red" : "color: black")" class="card-text">@Model.TotalMissingTimeInMonth.ToFormattedStringTime()</h3>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+        <div class="rounded col-md-4 card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Total worked time</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
+                <h3 class="card-text">@Model.TotalWorkedTimeInMonth.ToFormattedStringTime()</h3>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
+        <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    </div>
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    google.charts.load('current', { packages: ['corechart', 'bar'] });
+    google.charts.setOnLoadCallback(LoadData);
+    function LoadData() {
+        $.ajax({
+            url: '@Url.Action("GetChartSixMonthsData", "Home")',
+            dataType: "json",
+            type: "GET",
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                toastr.error(err.message);
+            },
+            success: function (data) {
+                //console.log(data)
+                GetHoursFromLastSixMonthFromThisYear(data);
+                return false;
+            }
+        });
+        return false;
+    }
+
+    function GetHoursFromLastSixMonthFromThisYear(data) {
+        console.log(data)
+        debugger
+        var dataArray = [
+            ['', data[0].monthNameWithYear, data[1].monthNameWithYear, data[2].monthNameWithYear, data[3].monthNameWithYear, data[4].monthNameWithYear, data[5].monthNameWithYear],
+            ['Worked time', data[0].totalWorkedTimeInMonth.totalMinutes, data[1].totalWorkedTimeInMonth.totalMinutes, data[2].totalWorkedTimeInMonth.totalMinutes, data[3].totalWorkedTimeInMonth.totalMinutes, data[4].totalWorkedTimeInMonth.totalMinutes, data[5].totalWorkedTimeInMonth.totalMinutes],
+            ['Extra time', data[0].totalExtraTimeInMonth.totalMinutes, data[1].totalExtraTimeInMonth.totalMinutes, data[2].totalExtraTimeInMonth.totalMinutes, data[3].totalExtraTimeInMonth.totalMinutes, data[4].totalExtraTimeInMonth.totalMinutes, data[5].totalExtraTimeInMonth.totalMinutes],
+            ['Missing time', data[0].totalMissingTimeInMonth.totalMinutes, data[1].totalMissingTimeInMonth.totalMinutes, data[2].totalMissingTimeInMonth.totalMinutes, data[3].totalMissingTimeInMonth.totalMinutes, data[4].totalMissingTimeInMonth.totalMinutes, data[5].totalMissingTimeInMonth.totalMinutes]
+
+        ];
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+        var options = {
+            title: 'Total worked time from last six months',
+            chartArea: {
+                width: '60%'
+            },
+            colors: ['#ff4444', '#ffbb33', '#00C851', '#33b5e5', '#9933CC', '#2E2E2E'],
+            hAxis: {
+                title: 'Total worked time in minutes',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Points'
+            }
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        return false;
+    }
+</script> 
