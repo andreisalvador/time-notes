@@ -6,7 +6,9 @@ namespace TimeNotes.Domain
 {
     public class TimeEntry : Entity<TimeEntry>
     {
-        public DateTime DateHourPointed { get; private set; }
+        private DateTime _dateHourPointed;
+
+        public DateTime DateHourPointed { get => _dateHourPointed; private set { _dateHourPointed = value.AddSeconds(-value.Second); } }
         public Guid HourPointsId { get; private set; }
 
         //EF core.
