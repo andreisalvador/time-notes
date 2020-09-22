@@ -21,6 +21,8 @@ namespace TimeNotas.App.Models
                     _totalExtraTime = TimeSpan.FromTicks(_totalExtraTime.Ticks - _totalMissingTime.Ticks);
                     _totalMissingTime = TimeSpan.Zero;
                 }
+                else
+                    _totalExtraTime = TimeSpan.Zero;
 
                 return _totalExtraTime;
             }
@@ -35,6 +37,8 @@ namespace TimeNotas.App.Models
                     _totalMissingTime = TimeSpan.FromTicks(_totalMissingTime.Ticks - _totalExtraTime.Ticks);
                     _totalExtraTime = TimeSpan.Zero;
                 }
+                else
+                    _totalMissingTime = TimeSpan.Zero;
 
                 return _totalMissingTime;
             }
