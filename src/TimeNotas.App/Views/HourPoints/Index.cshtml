@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<TimeNotas.App.Models.HourPointsModel>
-@using System.Linq; 
+@using System.Linq;
 
 @{
     ViewData["Title"] = "Hour Points";
@@ -9,9 +9,9 @@
 
 <div class="row">
     <div class="col-md-5">
-        <a class="btn btn-info" asp-action="Create">New point</a>
+        <a class="btn btn-primary" asp-action="Create">New point</a>
         <a class="btn btn-dark" asp-action="PointNow">Point now</a>
-        <a class="btn btn-secondary" asp-action="AutoGenerateTimeEntriesToday">Auto generate points today</a>
+        <a class="btn btn-success" asp-action="AutoGenerateTimeEntriesToday">Auto generate points today</a>
     </div>
     <div class="col-md-3"></div>
     <form asp-action="Index" class="col-md-4" method="get">
@@ -55,11 +55,20 @@
                 <td>
                     @item.MissingTime.ToString(@"hh\:mm")
                 </td>
-                @foreach (var timeEntry in item.TimeEntries.OrderBy(time => time.DateHourPointed))
-                {
-                    <td>
-                        @Html.ActionLink(timeEntry.ToString(), "Edit", new { timeEntryId = timeEntry.Id })
-                    </td>
+                @{
+                    var orderedTimeEntries = item.TimeEntries.OrderBy(t => t.DateHourPointed).ToList();
+
+                    @for (int index = 0; index < ((orderedTimeEntries.Count % 2 == 0) ? orderedTimeEntries.Count : item.TimeEntries.Count + 1); index += 2)
+                    {
+                        <td class="badge badge-pill badge-dark" style="margin-right: 1%">
+                            @Html.ActionLink(orderedTimeEntries[index].ToString(), "Edit", new { timeEntryId = orderedTimeEntries[index].Id }, new { @style = "font-size: 100%; color: white" })
+
+                            @if (index + 1 < orderedTimeEntries.Count)
+                            {
+                                @Html.ActionLink(orderedTimeEntries[index + 1].ToString(), "Edit", new { timeEntryId = orderedTimeEntries[index + 1].Id }, new { @style = "font-size: 100%; color: white" })
+                            }
+                        </td>
+                    }
                 }
             </tr>
         }
