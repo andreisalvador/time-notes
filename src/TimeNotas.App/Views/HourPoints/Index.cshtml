@@ -57,10 +57,11 @@
                 </td>
                 @{
                     var orderedTimeEntries = item.TimeEntries.OrderBy(t => t.DateHourPointed).ToList();
+                    byte period = 1;
 
                     @for (int index = 0; index < ((orderedTimeEntries.Count % 2 == 0) ? orderedTimeEntries.Count : item.TimeEntries.Count + 1); index += 2)
                     {
-                        <td class="badge badge-pill @((index + 1 < orderedTimeEntries.Count) ? "badge-dark" : "badge-danger")" style="margin-right: 1%">
+                        <td title="@("Period " + period)" class="badge badge-pill @((index + 1 < orderedTimeEntries.Count) ? "badge-dark" : "badge-danger")" style="margin-right: 1%; margin-top: 1.5%">
                             @Html.ActionLink(orderedTimeEntries[index].ToString(), "Edit", new { timeEntryId = orderedTimeEntries[index].Id }, new { @style = "font-size: 100%; color: white" })
 
                             @if (index + 1 < orderedTimeEntries.Count)
@@ -68,6 +69,7 @@
                                 @Html.ActionLink(orderedTimeEntries[index + 1].ToString(), "Edit", new { timeEntryId = orderedTimeEntries[index + 1].Id }, new { @style = "font-size: 100%; color: white" })
                             }
                         </td>
+                        period++;
                     }
                 }
             </tr>
