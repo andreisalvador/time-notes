@@ -60,7 +60,7 @@
 
                     @for (int index = 0; index < ((orderedTimeEntries.Count % 2 == 0) ? orderedTimeEntries.Count : item.TimeEntries.Count + 1); index += 2)
                     {
-                        <td class="badge badge-pill badge-dark" style="margin-right: 1%">
+                        <td class="badge badge-pill @((index + 1 < orderedTimeEntries.Count) ? "badge-dark" : "badge-danger")" style="margin-right: 1%">
                             @Html.ActionLink(orderedTimeEntries[index].ToString(), "Edit", new { timeEntryId = orderedTimeEntries[index].Id }, new { @style = "font-size: 100%; color: white" })
 
                             @if (index + 1 < orderedTimeEntries.Count)
