@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TimeNotes.Domain;
 
-namespace TimeNotes.Data.Mappings
+namespace TimeNotas.Infrastructure.Data.Mappings
 {
     public class TimeEntryMapping : IEntityTypeConfiguration<TimeEntry>
     {

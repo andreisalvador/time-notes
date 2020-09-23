@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TimeNotes.Data\TimeNotes.Data.csproj" />
+    <ProjectReference Include="..\TimeNotes.Domain\TimeNotes.Domain.csproj" />
+    <ProjectReference Include="..\TimeNotes.Infrastructure.Components\TimeNotes.Infrastructure.Components.csproj" />
+    <ProjectReference Include="..\TimeNotes.Infrastructure.Data\TimeNotes.Infrastructure.Data.csproj" />
   </ItemGroup>
 
   <Target Name="PrePublishTarget" AfterTargets="Publish">

@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using TimeNotes.Domain;
 
-namespace TimeNotes.Data
+namespace TimeNotes.Infrastructure.Data
 {
     public class TimeNotesContext : DbContext
     {

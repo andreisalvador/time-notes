@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotas.App", "..\src\TimeNotas.App\TimeNotas.App.csproj", "{B79A0148-94FF-429A-9824-44ED70B3A3E6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2B7C907B-DE23-4AD9-9BB5-5CDC9FAD7907}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{2B7C907B-DE23-4AD9-9BB5-5CDC9FAD7907}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F971B3FA-E201-419E-A1A6-5414B8BD8F1E}"
 EndProject
@@ -15,11 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{095699B0-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Core", "..\src\TimeNotes.Core\TimeNotes.Core.csproj", "{8703C458-5CEB-4E1C-88B4-2752373A6913}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Data", "..\src\TimeNotes.Data\TimeNotes.Data.csproj", "{6AF6F7BD-C5FD-48D2-8BC5-7A116E2AF443}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Infrastructure.Data", "..\src\TimeNotes.Infrastructure.Data\TimeNotes.Infrastructure.Data.csproj", "{6AF6F7BD-C5FD-48D2-8BC5-7A116E2AF443}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A5938943-CB96-4ED3-8BC6-B8DB4B7F4E64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeNotes.Domain.Tests", "..\tests\TimeNotes.Domain.Tests\TimeNotes.Domain.Tests.csproj", "{9377039F-E205-4896-8D82-78B268787395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeNotes.Domain.Tests", "..\tests\TimeNotes.Domain.Tests\TimeNotes.Domain.Tests.csproj", "{9377039F-E205-4896-8D82-78B268787395}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeNotes.Infrastructure.Components", "..\src\TimeNotes.Infrastructure.Components\TimeNotes.Infrastructure.Components.csproj", "{92D7963C-2CA3-4B58-96AA-68980752BF9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{9377039F-E205-4896-8D82-78B268787395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9377039F-E205-4896-8D82-78B268787395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9377039F-E205-4896-8D82-78B268787395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92D7963C-2CA3-4B58-96AA-68980752BF9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92D7963C-2CA3-4B58-96AA-68980752BF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92D7963C-2CA3-4B58-96AA-68980752BF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92D7963C-2CA3-4B58-96AA-68980752BF9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{8703C458-5CEB-4E1C-88B4-2752373A6913} = {095699B0-4EC4-43C6-961B-238A00830EF7}
 		{6AF6F7BD-C5FD-48D2-8BC5-7A116E2AF443} = {2B7C907B-DE23-4AD9-9BB5-5CDC9FAD7907}
 		{9377039F-E205-4896-8D82-78B268787395} = {A5938943-CB96-4ED3-8BC6-B8DB4B7F4E64}
+		{92D7963C-2CA3-4B58-96AA-68980752BF9F} = {2B7C907B-DE23-4AD9-9BB5-5CDC9FAD7907}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1EC89AB3-BC4F-460A-89AB-E1D2790759A8}

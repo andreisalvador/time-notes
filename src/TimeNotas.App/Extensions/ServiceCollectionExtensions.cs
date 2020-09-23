@@ -7,12 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Reflection;
-using TimeNotas.App.Data;
 using TimeNotas.App.ProfileMaps;
-using TimeNotes.Data;
+using TimeNotas.Infrastructure.Data.Identity;
 using TimeNotes.Data.Repository;
 using TimeNotes.Domain.Data.Interfaces;
 using TimeNotes.Domain.Services;
+using TimeNotes.Infrastructure.Components.Exports.Excel;
+using TimeNotes.Infrastructure.Data;
 
 namespace TimeNotas.App.Extensions
 {
@@ -25,6 +26,12 @@ namespace TimeNotas.App.Extensions
             AddRepositories(services);
             AddMappings(services);
             AddDomainServices(services);
+            AddInfrastrucutreComponents(services);
+        }
+
+        private static void AddInfrastrucutreComponents(IServiceCollection services)
+        {
+            services.AddSingleton(typeof(ExcelExport<>));
         }
 
         private static void AddDomainServices(IServiceCollection services)

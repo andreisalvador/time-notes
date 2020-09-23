@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TimeNotas.App.Models;
+using TimeNotes.Core.Extensions;
 using TimeNotes.Domain;
 using TimeNotes.Domain.Data.Interfaces;
 using TimeNotes.Domain.Services;
+using TimeNotes.Infrastructure.Components.Exports.Excel;
 
 namespace TimeNotas.App.Controllers
 {
@@ -22,27 +24,28 @@ namespace TimeNotas.App.Controllers
         private readonly HourPointsServices _hourPointsServices;
         private readonly IHourPointsRepository _hourPointsRepository;
         private readonly IHourPointConfigurationsRepository _hourPointConfigurationsRepository;
+        private readonly ExcelExport<HourPointsModel> _excelExport;
 
         public HourPointsController(HourPointsServices hourPointsServices,
             IHourPointsRepository hourPointsRepository,
             IHourPointConfigurationsRepository hourPointConfigurationsRepository,
             UserManager<IdentityUser> userManager,
-            IMapper mapper)
+            IMapper mapper, ExcelExport<HourPointsModel> excelExport)
         {
             _hourPointsServices = hourPointsServices;
             _hourPointsRepository = hourPointsRepository;
             _hourPointConfigurationsRepository = hourPointConfigurationsRepository;
             _userManager = userManager;
             _mapper = mapper;
+            _excelExport = excelExport;
         }
 
         public async Task<IActionResult> Index(DateTime? searchDate = null)
         {
             if (!searchDate.HasValue)
-            {
-                DateTime currentDate = DateTime.Now;
-                searchDate = new DateTime(currentDate.Year, currentDate.Month, 1);
-            }
+                searchDate = DateTime.Now.GetDateTimeInFirstDate();
+
+            ViewData["CurrentSearchDate"] = searchDate.Value.ToString("yyyy-MM");
 
             IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
@@ -51,11 +54,7 @@ namespace TimeNotas.App.Controllers
             if (config is null)
                 return RedirectToAction("Create", "HourPointConfigurations");
 
-            DateTime lastDaySearchedMonth = new DateTime(searchDate.Value.Year, searchDate.Value.Month, DateTime.DaysInMonth(searchDate.Value.Year, searchDate.Value.Month));
-
-            IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetHourPointsWhere(x => (x.Date.Date >= searchDate.Value.Date && x.Date.Date <= lastDaySearchedMonth.Date) && x.UserId.Equals(Guid.Parse(identityUser.Id)));
-
-            IEnumerable<HourPointsModel> userHourPointsModel = _mapper.Map<IEnumerable<HourPointsModel>>(userHourPoints);
+            IEnumerable<HourPointsModel> userHourPointsModel = await GetHourPointsFromUserInSearchedDate(searchDate, identityUser);
 
             return View(nameof(Index), userHourPointsModel.OrderBy(h => h.Date));
         }
@@ -164,6 +163,27 @@ namespace TimeNotas.App.Controllers
             await _hourPointsServices.RecalculeExtraTimeAndMissingTime(hourPointsId, Guid.Parse(identityUser.Id));
 
             return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> ExportUserHourPointsToExcel(DateTime searchDate)
+        {
+            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+
+            IEnumerable<HourPointsModel> userHourPointsModel = await GetHourPointsFromUserInSearchedDate(searchDate, identityUser);
+
+            byte[] fileBytes = _excelExport.ExportExcel(userHourPointsModel);
+
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{searchDate.ToString("MMMM")}_{searchDate.Year}.xlsx");
+        }
+
+        private async Task<IEnumerable<HourPointsModel>> GetHourPointsFromUserInSearchedDate(DateTime? searchDate, IdentityUser identityUser)
+        {
+            DateTime lastDaySearchedMonth = new DateTime(searchDate.Value.Year, searchDate.Value.Month, DateTime.DaysInMonth(searchDate.Value.Year, searchDate.Value.Month));
+
+            IEnumerable<HourPoints> userHourPoints = await _hourPointsRepository.GetHourPointsWhere(x => (x.Date.Date >= searchDate.Value.Date && x.Date.Date <= lastDaySearchedMonth.Date) && x.UserId.Equals(Guid.Parse(identityUser.Id)));
+
+            return _mapper.Map<IEnumerable<HourPointsModel>>(userHourPoints);
         }
     }
 }

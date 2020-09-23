@@ -3,6 +3,7 @@ using System;
 using System.Threading.Tasks;
 using TimeNotes.Domain;
 using TimeNotes.Domain.Data.Interfaces;
+using TimeNotes.Infrastructure.Data;
 
 namespace TimeNotes.Data.Repository
 {

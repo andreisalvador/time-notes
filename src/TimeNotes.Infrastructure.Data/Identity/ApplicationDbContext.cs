@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace TimeNotas.App.Data
+namespace TimeNotas.Infrastructure.Data.Identity
 {
     public class ApplicationDbContext : IdentityDbContext
     {
