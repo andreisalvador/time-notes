@@ -15,13 +15,14 @@ namespace TimeNotes.Infrastructure.Components.Exports.Excel
         {
             using (MemoryStream stream = new MemoryStream())
             {
-                using (var workbook = new XLWorkbook())
-                {
-                    IXLWorksheet workSheet = workbook.AddWorksheet(sheetName);
-                    PopulateColumnNames(workSheet, records);
-                    PopulateColumnValues(workSheet, records);
-                    workbook.SaveAs(stream);
-                }
+                if (HasRecords(records))
+                    using (var workbook = new XLWorkbook())
+                    {
+                        IXLWorksheet workSheet = workbook.AddWorksheet(sheetName);
+                        PopulateColumnNames(workSheet, records);
+                        PopulateColumnValues(workSheet, records);
+                        workbook.SaveAs(stream);
+                    }
 
                 return stream.ToArray();
             }
