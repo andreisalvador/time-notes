@@ -75,6 +75,9 @@ namespace TimeNotes.Data.Repository
         public async Task<HourPoints> GetHourPointsWithTimeEntriesByDateAndUser(DateTime date, Guid userId)
             => await _context.HourPoints.Where(w => w.Date.Date.Equals(date.Date) && w.UserId.Equals(userId)).Include(t => t.TimeEntries).SingleOrDefaultAsync();
 
+        public async Task<bool> ExistsHourPointsToDateAndUser(DateTime date, Guid userId)
+            => await _context.HourPoints.Where(w => w.Date.Date.Equals(date.Date) && w.UserId.Equals(userId)).AnyAsync();
+
         public void Dispose()
         {
             _context?.Dispose();

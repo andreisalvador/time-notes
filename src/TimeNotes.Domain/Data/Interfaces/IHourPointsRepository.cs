@@ -17,6 +17,7 @@ namespace TimeNotes.Domain.Data.Interfaces
         Task<IEnumerable<HourPoints>> GetAllHourPointsWithTimeEntries(Guid userId);
         Task<IEnumerable<HourPoints>> GetHourPointsWhere(Expression<Func<HourPoints, bool>> predicate);
         Task<HourPoints> GetHourPointsWithTimeEntriesByDateAndUser(DateTime date, Guid userId);
+        Task<bool> ExistsHourPointsToDateAndUser(DateTime date, Guid userId);
 
         void AddTimeEntry(TimeEntry timeEntry);
         void RemoveTimeEntry(TimeEntry timeEntry);
