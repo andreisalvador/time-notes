@@ -1,4 +1,6 @@
 ﻿@model TimeNotas.App.Models.HourPointConfigurationsModel
+@using TimeNotes.Core.Enums
+@using TimeNotas.App.Extensions
 
 @{
     ViewData["Title"] = "Configurations";
@@ -13,8 +15,13 @@
             @Html.HiddenFor(model => model.Id)
             <div class="form-group">
                 <label asp-for="WorkDays" class="control-label"></label>
-                <select asp-for="WorkDays" asp-items="Model.GetWorkDaysDescriptions()" class="form-control"></select>
+                <select asp-for="WorkDays" asp-items="this.GetSelectItensFromEnum<DaysOfWeek>()" class="form-control"></select>
                 <span asp-validation-for="WorkDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BankOfHours" class="control-label"></label>
+                <select asp-for="BankOfHours" asp-items="this.GetSelectItensFromEnum<BankOfHoursType>()" class="form-control"></select>
+                <span asp-validation-for="BankOfHours" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OfficeHour" class="control-label"></label>
@@ -28,13 +35,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartWorkTime" class="control-label"></label>
-                <input type="time" asp-for="StartWorkTime" class="form-control"  min="06:00" />
+                <input type="time" asp-for="StartWorkTime" class="form-control" min="06:00" />
                 <span asp-validation-for="StartWorkTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ToleranceTime" class="control-label"></label>
                 <input type="time" asp-for="ToleranceTime" class="form-control" min="00:01" max="00:30" />
                 <span asp-validation-for="ToleranceTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HourValue" class="control-label"></label>
+                <input asp-format="{0:C}" asp-for="HourValue" class="form-control" />
+                <span asp-validation-for="HourValue" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

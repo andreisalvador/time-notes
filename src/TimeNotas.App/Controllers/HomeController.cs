@@ -17,6 +17,7 @@ namespace TimeNotas.App.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private const byte CHART_MONTHS_RANGE = 6;
         private readonly IHourPointsRepository _hourPointsRepository;
         private readonly IHourPointConfigurationsRepository _hourPointConfigurationsRepository;
         private readonly UserManager<IdentityUser> _userManager;
@@ -44,7 +45,7 @@ namespace TimeNotas.App.Controllers
 
             HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
 
-            HomeDashboardViewModel homeDashboardViewModel = new HomeDashboardViewModel(currentDate, userHourPoints, hourPointConfigurations);
+            HomeDashboardViewModel homeDashboardViewModel = new HomeDashboardViewModel(new MonthExtract(currentDate, userHourPoints, hourPointConfigurations));
 
             return View(homeDashboardViewModel);
         }
@@ -68,13 +69,13 @@ namespace TimeNotas.App.Controllers
 
             HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
 
-            IList<HomeDashboardViewModel> userHourPointsFromSixMonths = new List<HomeDashboardViewModel>();
+            IList<HomeDashboardViewModel> userHourPointsFromSixMonths = new List<HomeDashboardViewModel>();            
 
-            while (startDate.Month <= endDate.Month)
+            while (userHourPointsFromSixMonths.Count < CHART_MONTHS_RANGE)
             {
                 IEnumerable<HourPoints> hoursPointsOfMonth = userHourPointsByMonth[startDate.Month];
-
-                userHourPointsFromSixMonths.Add(new HomeDashboardViewModel(startDate, hoursPointsOfMonth, hourPointConfigurations));
+                
+                userHourPointsFromSixMonths.Add(new HomeDashboardViewModel(new MonthExtract(startDate, hoursPointsOfMonth, hourPointConfigurations)));
 
                 startDate = startDate.AddMonths(1);
             }

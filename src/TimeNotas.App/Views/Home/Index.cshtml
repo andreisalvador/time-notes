@@ -2,33 +2,46 @@
 @using TimeNotes.Core.Extensions;
 @{
     ViewData["Title"] = "Home Page";
+    bool useSalary = Model.SalaryInMonth > 0;
+    string cardClass = $"rounded col-md-{(useSalary ? '3' : '4')} card";
 }
 
 <div class="container text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>There is your times from this month.</p>
+    <p>This is your informations for this month.</p>
     <div class="row">
-        <div class="rounded col-md-4 card" style="width: 18rem;">
+        <div class="@cardClass">
             <div class="card-body">
                 <h5 class="card-title">Total extra time</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
-                <h3 class="card-text">@Model.TotalExtraTimeInMonth.ToFormattedStringTime()</h3>                
+                <h3 class="card-text">@Model.TotalExtraTimeInMonth.ToFormattedStringTime()</h3>
             </div>
         </div>
-        <div class="rounded col-md-4 card" style="width: 18rem;">
+        <div class="@cardClass">
             <div class="card-body">
                 <h5 class="card-title">Total missing time</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
-                <h3 style="@(Model.TotalMissingTimeInMonth.Ticks > 0 ? "color:red" : "color: black")" class="card-text">@Model.TotalMissingTimeInMonth.ToFormattedStringTime()</h3>                
+                <h3 style="@(Model.TotalMissingTimeInMonth.Ticks > 0 ? "color:red" : "color: black")" class="card-text">@Model.TotalMissingTimeInMonth.ToFormattedStringTime()</h3>
             </div>
         </div>
-        <div class="rounded col-md-4 card" style="width: 18rem;">
+        <div class="@cardClass">
             <div class="card-body">
                 <h5 class="card-title">Total worked time</h5>
                 <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
-                <h3 class="card-text">@Model.TotalWorkedTimeInMonth.ToFormattedStringTime()</h3>                
+                <h3 class="card-text">@Model.TotalWorkedTimeInMonth.ToFormattedStringTime()</h3>
             </div>
         </div>
+
+        @if (useSalary)
+        {
+            <div class="@cardClass">
+                <div class="card-body">
+                    <h5 class="card-title">Salary</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@Model.MonthName</h6>
+                    <h3 class="card-text">@Model.SalaryInMonth.ToString("C2")</h3>
+                </div>
+            </div>
+        }
         <div id="chart_div" style="width: 900px; height: 500px;"></div>
     </div>
 </div>

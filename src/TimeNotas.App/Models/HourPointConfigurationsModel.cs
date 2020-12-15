@@ -19,6 +19,9 @@ namespace TimeNotas.App.Models
         [Display(Name = "Work days")]
         public DaysOfWeek WorkDays { get; set; }
 
+        [Display(Name = "Bank of hours type")]
+        public BankOfHoursType BankOfHours { get; set; }
+
         [Display(Name = "Office hour")]
         [DataType(DataType.Time)]
         public TimeSpan OfficeHour { get; set; }
@@ -35,17 +38,21 @@ namespace TimeNotas.App.Models
         [DataType(DataType.Time)]        
         public TimeSpan ToleranceTime { get; set; }
 
-        public IEnumerable<SelectListItem> GetWorkDaysDescriptions()
+        [Display(Name = "Hour value")]
+        [DataType(DataType.Currency)]
+        public decimal HourValue { get; set; }
+
+        public IEnumerable<SelectListItem> GetSelectItensFromEnum<TEnum>() where TEnum : Enum
         {
-            IEnumerable<EnumDescriptionAttribute> descriptions = GetWorkDaysEnumDescriptionAttributes();
+            IEnumerable<EnumDescriptionAttribute> descriptions = GetEnumDescriptionAttribute<TEnum>();
 
             return descriptions?.Where(w => w != null).Select(desc => new SelectListItem(desc.Description, desc.Value));
         }
 
-        public string GetCurrentWorkDaysDescription()
-            => GetWorkDaysEnumDescriptionAttributes().Where(enumDesc => enumDesc != null && enumDesc.Value.Equals(((int)WorkDays).ToString())).SingleOrDefault()?.Description;
+        public string GetCurrentEnumDescription<TEnum>(string currentEnumValue) where TEnum : Enum
+           => GetEnumDescriptionAttribute<TEnum>().Where(enumDesc => enumDesc != null && enumDesc.Value.Equals(currentEnumValue)).SingleOrDefault()?.Description;
 
-        private IEnumerable<EnumDescriptionAttribute> GetWorkDaysEnumDescriptionAttributes()
-            => ((TypeInfo)typeof(DaysOfWeek)).DeclaredFields.Select(member => member.GetCustomAttribute<EnumDescriptionAttribute>());
+        private IEnumerable<EnumDescriptionAttribute> GetEnumDescriptionAttribute<TEnum>()
+            => ((TypeInfo)typeof(TEnum)).DeclaredFields.Select(member => member.GetCustomAttribute<EnumDescriptionAttribute>());
     }
 }

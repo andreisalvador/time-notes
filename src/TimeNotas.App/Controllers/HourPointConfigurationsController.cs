@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using TimeNotas.App.Models;
 using TimeNotes.Domain;
@@ -52,11 +51,13 @@ namespace TimeNotas.App.Controllers
                 IdentityUser identityUser = await _userManager.GetUserAsync(User);
 
                 HourPointConfigurations hourPointConfigurations = new HourPointConfigurations(hourPointConfigurationsModel.WorkDays,
+                    hourPointConfigurationsModel.BankOfHours,
                     hourPointConfigurationsModel.OfficeHour,
                     hourPointConfigurationsModel.LunchTime,
                     hourPointConfigurationsModel.StartWorkTime,
                     hourPointConfigurationsModel.ToleranceTime,
-                    Guid.Parse(identityUser.Id));
+                    Guid.Parse(identityUser.Id),
+                    hourPointConfigurationsModel.HourValue);
 
                 _hourPointConfigurationsRepository.AddHourPointConfiguration(hourPointConfigurations);
                 await _hourPointConfigurationsRepository.Commit();
@@ -93,6 +94,8 @@ namespace TimeNotas.App.Controllers
             hourPointConfigurations.ChangeOfficeHour(hourPointConfigurationsModel.OfficeHour);
             hourPointConfigurations.ChangeStartWorkTime(hourPointConfigurationsModel.StartWorkTime);
             hourPointConfigurations.ChangeToleranceTime(hourPointConfigurationsModel.ToleranceTime);
+            hourPointConfigurations.ChangeBankOfHours(hourPointConfigurationsModel.BankOfHours);
+            hourPointConfigurations.ChangeHourValue(hourPointConfigurationsModel.HourValue);
 
             _hourPointConfigurationsRepository.UpdateHourPointConfiguration(hourPointConfigurations);
             await _hourPointConfigurationsRepository.Commit();

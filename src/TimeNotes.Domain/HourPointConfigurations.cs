@@ -9,21 +9,25 @@ namespace TimeNotes.Domain
     public class HourPointConfigurations : Entity<HourPointConfigurations>, IAggregateRoot
     {
         public DaysOfWeek WorkDays { get; private set; }
+        public BankOfHoursType BankOfHours { get; private set; }
         public TimeSpan OfficeHour { get; private set; }
         public TimeSpan LunchTime { get; private set; }
         public TimeSpan ToleranceTime { get; private set; }
         public TimeSpan StartWorkTime { get; private set; }
+        public decimal HourValue { get; private set; }
         public Guid UserId { get; private set; }
 
 
-        public HourPointConfigurations(DaysOfWeek workDays, TimeSpan officeHour, TimeSpan lunchTime, TimeSpan startWorkTime, TimeSpan toleranceTime, Guid userId)
+        public HourPointConfigurations(DaysOfWeek workDays, BankOfHoursType bankOfHours, TimeSpan officeHour, TimeSpan lunchTime, TimeSpan startWorkTime, TimeSpan toleranceTime, Guid userId, decimal hourValue = 0m)
         {
             WorkDays = workDays;
+            BankOfHours = bankOfHours;
             OfficeHour = officeHour;
             LunchTime = lunchTime;
             StartWorkTime = startWorkTime;
             ToleranceTime = toleranceTime;
             UserId = userId;
+            HourValue = hourValue;
             Validate();
         }
 
@@ -31,6 +35,12 @@ namespace TimeNotes.Domain
         {
             if (Enum.IsDefined(typeof(DaysOfWeek), workDays))
                 WorkDays = workDays;
+        }
+
+        public void ChangeBankOfHours(BankOfHoursType bankOfHoursType)
+        {
+            if (Enum.IsDefined(typeof(BankOfHoursType), bankOfHoursType))
+                BankOfHours = bankOfHoursType;
         }
 
         public void ChangeLunchTime(TimeSpan lunchTime)
@@ -57,10 +67,17 @@ namespace TimeNotes.Domain
                 ToleranceTime = toleranceTime;
         }
 
+        public void ChangeHourValue(decimal newHourValue)
+        {
+            if (newHourValue > 0 && newHourValue != HourValue)
+                HourValue = newHourValue;
+        }
+
         public override void Validate()
         {
             Validate(this, new HourPointConfigurationsValidator());
         }
+
 
         private bool IsTimeValid(TimeSpan time)
             => time > TimeSpan.MinValue && (time.Hours <= 23 && time.Minutes <= 59);

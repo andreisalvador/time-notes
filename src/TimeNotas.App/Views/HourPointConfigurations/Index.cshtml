@@ -1,4 +1,6 @@
 ﻿@model TimeNotas.App.Models.HourPointConfigurationsModel
+@using TimeNotes.Core.Enums
+@using TimeNotas.App.Extensions;
 
 @{
     ViewData["Title"] = "Configurations";
@@ -12,7 +14,13 @@
             @Html.DisplayNameFor(model => model.WorkDays)
         </dt>
         <dd class="col-sm-10">
-            @Model.GetCurrentWorkDaysDescription()
+            @(this.GetCurrentEnumDescription<DaysOfWeek>(((int)Model.WorkDays).ToString()))
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BankOfHours)
+        </dt>
+        <dd class="col-sm-10">
+            @(this.GetCurrentEnumDescription<BankOfHoursType>(((int)Model.BankOfHours).ToString()))
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OfficeHour)
@@ -38,8 +46,14 @@
         <dd class="col-sm-10">
             @Model.ToleranceTime.ToString(@"hh\:mm")
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HourValue)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.HourValue.ToString("C")
+        </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-info" })    
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-info" })
 </div>

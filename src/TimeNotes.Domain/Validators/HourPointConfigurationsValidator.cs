@@ -27,9 +27,16 @@ namespace TimeNotes.Domain.Validators
                 .IsInEnum()
                 .WithMessage("Days of work is not valid.");
 
+            RuleFor(h => h.BankOfHours)
+                .IsInEnum()
+                .WithMessage("Bank of hours is not valid.");
+
             RuleFor(h => h.UserId)
                 .NotEqual(Guid.Empty)
                 .WithMessage("You must to inform the user.");
+
+            RuleFor(h => h.HourValue)
+                .GreaterThanOrEqualTo(0m);
         }
     }
 }

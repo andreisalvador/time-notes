@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimeNotes.Infrastructure.Data;
@@ -9,9 +10,10 @@ using TimeNotes.Infrastructure.Data;
 namespace TimeNotes.Data.Migrations.TimeNotes
 {
     [DbContext(typeof(TimeNotesContext))]
-    partial class TimeNotesContextModelSnapshot : ModelSnapshot
+    [Migration("20201120141038_Bank_of_hours_configuration")]
+    partial class Bank_of_hours_configuration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,9 +29,6 @@ namespace TimeNotes.Data.Migrations.TimeNotes
 
                     b.Property<int>("BankOfHours")
                         .HasColumnType("integer");
-
-                    b.Property<decimal>("HourValue")
-                        .HasColumnType("numeric");
 
                     b.Property<TimeSpan>("LunchTime")
                         .HasColumnType("interval");
