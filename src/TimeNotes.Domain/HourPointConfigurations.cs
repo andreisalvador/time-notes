@@ -69,7 +69,7 @@ namespace TimeNotes.Domain
 
         public void ChangeHourValue(decimal newHourValue)
         {
-            if (newHourValue > 0 && newHourValue != HourValue)
+            if (newHourValue >= 0 && newHourValue != HourValue)
                 HourValue = newHourValue;
         }
 
