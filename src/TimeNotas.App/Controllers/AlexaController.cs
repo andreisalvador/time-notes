@@ -28,6 +28,17 @@ namespace TimeNotas.App.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ExistsUserRegisteredWithAlexaId(string alexaUserId)
+        {
+            if (string.IsNullOrWhiteSpace(alexaUserId))
+                return BadRequest("As informações enviadas não podem ser vazia, entre em contato com a administração do time notes.");
+
+            TimeNotesUser user = await FindUserByAlexaUserId(alexaUserId);
+
+            return Ok(user is null);
+        }
+
         [HttpPost]
         public async Task<IActionResult> RegisterAlexa(string alexaUserId, string passcode)
         {
@@ -43,7 +54,7 @@ namespace TimeNotas.App.Controllers
 
             _logger.LogInformation("Usuário para cadastrar alexa encontrado.");
 
-            user.SetAlexaUserId(alexaUserId);
+            user.AssignedAlexaToUser(alexaUserId);
 
             IdentityResult updateResult = await _userManager.UpdateAsync(user);
 
@@ -55,11 +66,11 @@ namespace TimeNotas.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PointNow(string alexaUserId)
+        public async Task<IActionResult> RegisterPointNow(string alexaUserId)
         {
-            TimeNotesUser user = await _userManager.Users.Where(user => user.AlexaUserId == alexaUserId).SingleOrDefaultAsync();
+            TimeNotesUser user = await FindUserByAlexaUserId(alexaUserId);
 
-            if (user is null) 
+            if (user is null)
                 return BadRequest("Parece que você não registrou sua alexa no time notes. Para cadastrá-la, basta ir no site na aba de configurações e habilitar a opção Use Alexa Support e depois falar comigo novamente me passando o código que você recebeu.");
 
             DateTime point = DateTime.Now;
@@ -67,6 +78,26 @@ namespace TimeNotas.App.Controllers
             await _hourPointsServices.AddTimeEntryToHourPoints(Guid.Parse(user.Id), new TimeEntry(point));
 
             return Ok($"Apontamento realizado às {point.Hour}:{point.Minute}");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterPointAt(string alexaUserId, string time)
+        {
+            DateTime point = DateTime.Today + TimeSpan.Parse(time);
+
+            TimeNotesUser user = await FindUserByAlexaUserId(alexaUserId);
+
+            if (user is null)
+                return BadRequest("Parece que você não registrou sua alexa no time notes. Para cadastrá-la, basta ir no site na aba de configurações e habilitar a opção Use Alexa Support e depois falar comigo novamente me passando o código que você recebeu.");
+
+            await _hourPointsServices.AddTimeEntryToHourPoints(Guid.Parse(user.Id), new TimeEntry(point));
+
+            return Ok($"Apontamento realizado às {point.Hour}:{point.Minute}");
+        }
+
+        private async Task<TimeNotesUser> FindUserByAlexaUserId(string alexaUserId)
+        {
+            return await _userManager.Users.Where(user => user.AlexaUserId == alexaUserId).SingleOrDefaultAsync();
         }
     }
 }

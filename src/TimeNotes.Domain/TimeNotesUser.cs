@@ -6,12 +6,10 @@ namespace TimeNotes.Domain
     {
         public string AlexaUserId { get; private set; }
 
-        public void SetAlexaUserId(string alexaUserId)
-        {
-            AlexaUserId = alexaUserId;
-        }
+        public void AssignedAlexaToUser(string alexaUserId)
+            => AlexaUserId = alexaUserId;
 
         public void UnassingAlexaFromUser()
-         => AlexaUserId = string.Empty;
+            => AlexaUserId = string.Empty;
     }
 }
