@@ -20,10 +20,10 @@ namespace TimeNotas.App.Controllers
         private const byte CHART_MONTHS_RANGE = 6;
         private readonly IHourPointsRepository _hourPointsRepository;
         private readonly IHourPointConfigurationsRepository _hourPointConfigurationsRepository;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<TimeNotesUser> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IHourPointsRepository hourPointsRepository, UserManager<IdentityUser> userManager, IHourPointConfigurationsRepository hourPointConfigurationsRepository)
+        public HomeController(ILogger<HomeController> logger, IHourPointsRepository hourPointsRepository, UserManager<TimeNotesUser> userManager, IHourPointConfigurationsRepository hourPointConfigurationsRepository)
         {
             _logger = logger;
             _hourPointsRepository = hourPointsRepository;
@@ -33,7 +33,7 @@ namespace TimeNotas.App.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             if (identityUser is null) throw new ArgumentException($"Usuário não encontrado na base de dados.");
 
@@ -58,7 +58,7 @@ namespace TimeNotas.App.Controllers
             DateTime endDate = currentDate.GetDateTimeInLastDate();
             DateTime startDate = endDate.AddMonths(-5).GetDateTimeInFirstDate();
 
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             if (identityUser is null) throw new ArgumentException($"Usuário não encontrado na base de dados.");
 

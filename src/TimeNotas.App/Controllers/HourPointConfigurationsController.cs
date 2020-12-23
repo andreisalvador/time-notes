@@ -7,28 +7,31 @@ using System.Threading.Tasks;
 using TimeNotas.App.Models;
 using TimeNotes.Domain;
 using TimeNotes.Domain.Data.Interfaces;
+using TimeNotes.Infrastructure.Cache;
 
 namespace TimeNotas.App.Controllers
 {
     [Authorize]
     public class HourPointConfigurationsController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<TimeNotesUser> _userManager;
+        private readonly RedisCache _cache;
         private readonly IHourPointConfigurationsRepository _hourPointConfigurationsRepository;
         private readonly IMapper _mapper;
 
-        public HourPointConfigurationsController(UserManager<IdentityUser> userManager,
+        public HourPointConfigurationsController(UserManager<TimeNotesUser> userManager,
             IHourPointConfigurationsRepository hourPointConfigurationsRepository,
-            IMapper mapper)
+            IMapper mapper, RedisCache cache)
         {
             _userManager = userManager;
             _hourPointConfigurationsRepository = hourPointConfigurationsRepository;
             _mapper = mapper;
+            _cache = cache;
         }
 
         public async Task<IActionResult> Index()
         {
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser?.Id));
 
@@ -48,7 +51,7 @@ namespace TimeNotas.App.Controllers
         {
             try
             {
-                IdentityUser identityUser = await _userManager.GetUserAsync(User);
+                TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
                 HourPointConfigurations hourPointConfigurations = new HourPointConfigurations(hourPointConfigurationsModel.WorkDays,
                     hourPointConfigurationsModel.BankOfHours,
@@ -62,6 +65,8 @@ namespace TimeNotas.App.Controllers
                 _hourPointConfigurationsRepository.AddHourPointConfiguration(hourPointConfigurations);
                 await _hourPointConfigurationsRepository.Commit();
 
+                await EnsurePasscode(hourPointConfigurationsModel, identityUser);
+
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -69,8 +74,6 @@ namespace TimeNotas.App.Controllers
                 return View();
             }
         }
-
-
         public async Task<IActionResult> Edit(Guid id)
         {
             HourPointConfigurations hourPointConfigurations = await _hourPointConfigurationsRepository.GetHourPointConfigurationsById(id);
@@ -97,10 +100,44 @@ namespace TimeNotas.App.Controllers
             hourPointConfigurations.ChangeBankOfHours(hourPointConfigurationsModel.BankOfHours);
             hourPointConfigurations.ChangeHourValue(hourPointConfigurationsModel.HourValue);
 
+            if (hourPointConfigurationsModel.UseAlexaSupport && !hourPointConfigurations.UseAlexaSupport)
+            {
+                TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
+                hourPointConfigurations.ActiveAlexaSupport();
+                await EnsurePasscode(hourPointConfigurationsModel, identityUser);                
+            }
+            else
+                hourPointConfigurations.DisableAlexaSupport();
+
             _hourPointConfigurationsRepository.UpdateHourPointConfiguration(hourPointConfigurations);
             await _hourPointConfigurationsRepository.Commit();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task EnsurePasscode(HourPointConfigurationsModel hourPointConfigurationsModel, TimeNotesUser identityUser)
+        {
+            if (hourPointConfigurationsModel.UseAlexaSupport && string.IsNullOrWhiteSpace(identityUser.AlexaUserId))
+            {
+                string passcode = await GetPasscode();
+                await _cache.SetAsync(passcode, identityUser.Id);
+                TempData["passcode"] = passcode;
+            }
+        }
+
+        private async Task<string> GetPasscode()
+        {
+            string passcode = GeneratePasscode();
+
+            while (await _cache.ContainsKeyAsync(passcode))
+                passcode = GeneratePasscode();
+
+            return passcode;
+
+            static string GeneratePasscode()
+            {
+                return new Random().Next(100000, 999999).ToString();
+            }
         }
     }
 }

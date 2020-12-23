@@ -19,7 +19,7 @@ namespace TimeNotas.App.Controllers
     [Authorize]
     public class HourPointsController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<TimeNotesUser> _userManager;
         private readonly IMapper _mapper;
         private readonly HourPointsServices _hourPointsServices;
         private readonly IHourPointsRepository _hourPointsRepository;
@@ -29,7 +29,7 @@ namespace TimeNotas.App.Controllers
         public HourPointsController(HourPointsServices hourPointsServices,
             IHourPointsRepository hourPointsRepository,
             IHourPointConfigurationsRepository hourPointConfigurationsRepository,
-            UserManager<IdentityUser> userManager,
+            UserManager<TimeNotesUser> userManager,
             IMapper mapper, ExcelExport<HourPointsModel> excelExport)
         {
             _hourPointsServices = hourPointsServices;
@@ -47,7 +47,7 @@ namespace TimeNotas.App.Controllers
 
             ViewData["CurrentSearchDate"] = searchDate.Value.ToString("yyyy-MM");
 
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             var config = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
 
@@ -61,7 +61,7 @@ namespace TimeNotas.App.Controllers
 
         public async Task<IActionResult> AutoGenerateTimeEntriesToday()
         {
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             var config = await _hourPointConfigurationsRepository.GetHourPointConfigurationsByUserId(Guid.Parse(identityUser.Id));
 
@@ -84,7 +84,7 @@ namespace TimeNotas.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser identityUser = await _userManager.GetUserAsync(User);
+                TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
                 if (identityUser is null) throw new ArgumentException($"Usuário não encontrado na base de dados.");
 
@@ -109,7 +109,7 @@ namespace TimeNotas.App.Controllers
         {
             try
             {
-                IdentityUser identityUser = await _userManager.GetUserAsync(User);
+                TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
                 await _hourPointsServices.UpdateTimeEntryDateHourPointed(timeEntryModel.HourPointsId, timeEntryModel.Id, Guid.Parse(identityUser.Id), timeEntryModel.DateHourPointed);
 
@@ -144,7 +144,7 @@ namespace TimeNotas.App.Controllers
         {
             try
             {
-                IdentityUser identityUser = await _userManager.GetUserAsync(User);
+                TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
                 await _hourPointsServices.RemoveTimeEntryFromHourPoints(Guid.Parse(identityUser.Id), timeEntryModel.Id);
 
@@ -158,7 +158,7 @@ namespace TimeNotas.App.Controllers
 
         public async Task<IActionResult> RecalculateTimes(Guid hourPointsId)
         {
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             await _hourPointsServices.RecalculeExtraTimeAndMissingTime(hourPointsId, Guid.Parse(identityUser.Id));
 
@@ -168,7 +168,7 @@ namespace TimeNotas.App.Controllers
 
         public async Task<IActionResult> ExportUserHourPointsToExcel(DateTime searchDate)
         {
-            IdentityUser identityUser = await _userManager.GetUserAsync(User);
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
 
             IEnumerable<HourPointsModel> userHourPointsModel = await GetHourPointsFromUserInSearchedDate(searchDate, identityUser);
 

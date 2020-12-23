@@ -10,48 +10,64 @@
     <h4>@ViewData["Title"]</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkDays)
-        </dt>
-        <dd class="col-sm-10">
-            @(this.GetCurrentEnumDescription<DaysOfWeek>(((int)Model.WorkDays).ToString()))
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BankOfHours)
-        </dt>
-        <dd class="col-sm-10">
-            @(this.GetCurrentEnumDescription<BankOfHoursType>(((int)Model.BankOfHours).ToString()))
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.OfficeHour)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.OfficeHour.ToString(@"hh\:mm")
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LunchTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.LunchTime.ToString(@"hh\:mm")
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartWorkTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.StartWorkTime.ToString(@"hh\:mm")
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ToleranceTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.ToleranceTime.ToString(@"hh\:mm")
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HourValue)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.HourValue.ToString("C")
-        </dd>
+        <div style="width:50%">
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.WorkDays)
+            </dt>
+            <dd class="col-sm-6">
+                @(this.GetCurrentEnumDescription<DaysOfWeek>(((int)Model.WorkDays).ToString()))
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.BankOfHours)
+            </dt>
+            <dd class="col-sm-6">
+                @(this.GetCurrentEnumDescription<BankOfHoursType>(((int)Model.BankOfHours).ToString()))
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.OfficeHour)
+            </dt>
+            <dd class="col-sm-6">
+                @Model.OfficeHour.ToString(@"hh\:mm")
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.LunchTime)
+            </dt>
+            <dd class="col-sm-6">
+                @Model.LunchTime.ToString(@"hh\:mm")
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.StartWorkTime)
+            </dt>
+            <dd class="col-sm-6">
+                @Model.StartWorkTime.ToString(@"hh\:mm")
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.ToleranceTime)
+            </dt>
+            <dd class="col-sm-6">
+                @Model.ToleranceTime.ToString(@"hh\:mm")
+            </dd>
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.HourValue)
+            </dt>
+            <dd class="col-sm-6">
+                @Model.HourValue.ToString("C")
+            </dd>
+        </div>
+        <div style="width:50%">
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.UseAlexaSupport)
+                @if (Model.UseAlexaSupport)
+                {
+                    <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="@("To use time note in Alexa, say 'Alexa, time notes', follow the steps and inform the code: '" + TempData["passcode"] + "'. The code will expire in 1 minute.")">
+                        <button class="fas fa-question-circle" style="pointer-events: none;" type="button" disabled>Disabled button</button>
+                    </span>
+                }
+            </dt>
+            <dd class="col-sm-6">
+                @Model.UseAlexaSupport
+            </dd>
+        </div>
     </dl>
 </div>
 <div>

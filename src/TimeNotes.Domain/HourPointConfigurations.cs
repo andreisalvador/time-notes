@@ -16,7 +16,7 @@ namespace TimeNotes.Domain
         public TimeSpan StartWorkTime { get; private set; }
         public decimal HourValue { get; private set; }
         public Guid UserId { get; private set; }
-
+        public bool UseAlexaSupport { get; private set; }
 
         public HourPointConfigurations(DaysOfWeek workDays, BankOfHoursType bankOfHours, TimeSpan officeHour, TimeSpan lunchTime, TimeSpan startWorkTime, TimeSpan toleranceTime, Guid userId, decimal hourValue = 0m)
         {
@@ -29,6 +29,18 @@ namespace TimeNotes.Domain
             UserId = userId;
             HourValue = hourValue;
             Validate();
+        }
+
+        public void ActiveAlexaSupport()
+        {
+            if (!UseAlexaSupport)
+                UseAlexaSupport = true;
+        }
+
+        public void DisableAlexaSupport()
+        {
+            if (UseAlexaSupport)
+                UseAlexaSupport = false;
         }
 
         public void ChangeWorkDays(DaysOfWeek workDays)

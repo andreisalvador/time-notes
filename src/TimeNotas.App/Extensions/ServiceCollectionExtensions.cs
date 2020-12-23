@@ -10,8 +10,10 @@ using System.Reflection;
 using TimeNotas.App.ProfileMaps;
 using TimeNotas.Infrastructure.Data.Identity;
 using TimeNotes.Data.Repository;
+using TimeNotes.Domain;
 using TimeNotes.Domain.Data.Interfaces;
 using TimeNotes.Domain.Services;
+using TimeNotes.Infrastructure.Cache;
 using TimeNotes.Infrastructure.Components.Exports.Excel;
 using TimeNotes.Infrastructure.Data;
 
@@ -27,6 +29,20 @@ namespace TimeNotas.App.Extensions
             AddMappings(services);
             AddDomainServices(services);
             AddInfrastrucutreComponents(services);
+            AddRedisCache(services, webHostEnvironment);
+        }
+
+        private static void AddRedisCache(IServiceCollection services, IWebHostEnvironment webHostEnvironment)
+        {
+            string redisCloudUrl = webHostEnvironment.IsDevelopment() ? Environment.GetEnvironmentVariable("REDISCLOUD_URL") : "localhost:6379";
+
+            services.AddDistributedRedisCache(options =>
+            {
+                options.Configuration = redisCloudUrl;
+                options.InstanceName = "REDIS CACHE";
+            });
+
+            services.AddSingleton<RedisCache>();
         }
 
         private static void AddInfrastrucutreComponents(IServiceCollection services)
@@ -48,7 +64,7 @@ namespace TimeNotas.App.Extensions
         {   
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(webHostEnvironment.IsDevelopment() ? configuration.GetConnectionString("DefaultConnection") : Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<TimeNotesUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
         }
 

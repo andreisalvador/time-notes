@@ -42,17 +42,7 @@ namespace TimeNotas.App.Models
         [DataType(DataType.Currency)]
         public decimal HourValue { get; set; }
 
-        public IEnumerable<SelectListItem> GetSelectItensFromEnum<TEnum>() where TEnum : Enum
-        {
-            IEnumerable<EnumDescriptionAttribute> descriptions = GetEnumDescriptionAttribute<TEnum>();
-
-            return descriptions?.Where(w => w != null).Select(desc => new SelectListItem(desc.Description, desc.Value));
-        }
-
-        public string GetCurrentEnumDescription<TEnum>(string currentEnumValue) where TEnum : Enum
-           => GetEnumDescriptionAttribute<TEnum>().Where(enumDesc => enumDesc != null && enumDesc.Value.Equals(currentEnumValue)).SingleOrDefault()?.Description;
-
-        private IEnumerable<EnumDescriptionAttribute> GetEnumDescriptionAttribute<TEnum>()
-            => ((TypeInfo)typeof(TEnum)).DeclaredFields.Select(member => member.GetCustomAttribute<EnumDescriptionAttribute>());
+        [Display(Name = "Use alexa support")]        
+        public bool UseAlexaSupport { get; set; }
     }
 }

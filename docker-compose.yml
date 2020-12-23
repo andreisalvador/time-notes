@@ -19,3 +19,8 @@ services:
       - "16543:80"
     depends_on:
       - postgresdb
+  redis-cache:
+    image: redis:6-alpine
+    container_name: cache-redis
+    ports:
+      - "6379:6379"
