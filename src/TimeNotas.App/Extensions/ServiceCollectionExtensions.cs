@@ -34,7 +34,7 @@ namespace TimeNotas.App.Extensions
 
         private static void AddRedisCache(IServiceCollection services, IWebHostEnvironment webHostEnvironment)
         {
-            string redisCloudUrl = webHostEnvironment.IsDevelopment() ? Environment.GetEnvironmentVariable("REDISCLOUD_URL") : "localhost:6379";
+            string redisCloudUrl = webHostEnvironment.IsDevelopment() ? "localhost:6379" : Environment.GetEnvironmentVariable("REDISCLOUD_URL");
 
             services.AddDistributedRedisCache(options =>
             {
