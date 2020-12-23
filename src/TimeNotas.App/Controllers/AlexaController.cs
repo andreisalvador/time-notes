@@ -36,7 +36,7 @@ namespace TimeNotas.App.Controllers
 
             TimeNotesUser user = await FindUserByAlexaUserId(alexaUserId);
 
-            return Ok(user != null);
+            return Ok(new { exists = user != null });
         }
 
         [HttpPost]
@@ -97,6 +97,9 @@ namespace TimeNotas.App.Controllers
 
         private async Task<TimeNotesUser> FindUserByAlexaUserId(string alexaUserId)
         {
+            if (string.IsNullOrWhiteSpace(alexaUserId)) 
+                return null;
+
             return await _userManager.Users.Where(user => user.AlexaUserId == alexaUserId).SingleOrDefaultAsync();
         }
     }
