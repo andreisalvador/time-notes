@@ -29,6 +29,7 @@
   <Target Name="PrePublishTarget" AfterTargets="Publish">
     <Exec Command="dotnet tool install dotnet-ef" />
     <Exec Command="dotnet ef database update --context TimeNotesContext" />
+	<Exec Command="dotnet ef database update --context ApplicationDbContext" />
   </Target>
 
 </Project>
