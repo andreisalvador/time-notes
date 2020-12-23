@@ -36,7 +36,7 @@ namespace TimeNotas.App.Controllers
 
             TimeNotesUser user = await FindUserByAlexaUserId(alexaUserId);
 
-            return Ok(user is null);
+            return Ok(user != null);
         }
 
         [HttpPost]
