@@ -86,7 +86,6 @@ namespace TimeNotas.App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(HourPointConfigurationsModel hourPointConfigurationsModel)
         {
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.Values);
 
@@ -100,14 +99,19 @@ namespace TimeNotas.App.Controllers
             hourPointConfigurations.ChangeBankOfHours(hourPointConfigurationsModel.BankOfHours);
             hourPointConfigurations.ChangeHourValue(hourPointConfigurationsModel.HourValue);
 
+            TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
+
             if (hourPointConfigurationsModel.UseAlexaSupport && !hourPointConfigurations.UseAlexaSupport)
             {
-                TimeNotesUser identityUser = await _userManager.GetUserAsync(User);
                 hourPointConfigurations.ActiveAlexaSupport();
-                await EnsurePasscode(hourPointConfigurationsModel, identityUser);                
+                await EnsurePasscode(hourPointConfigurationsModel, identityUser);
             }
             else
+            {
                 hourPointConfigurations.DisableAlexaSupport();
+                identityUser.UnassingAlexaFromUser();
+                await _userManager.UpdateAsync(identityUser);
+            }
 
             _hourPointConfigurationsRepository.UpdateHourPointConfiguration(hourPointConfigurations);
             await _hourPointConfigurationsRepository.Commit();

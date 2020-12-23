@@ -10,5 +10,8 @@ namespace TimeNotes.Domain
         {
             AlexaUserId = alexaUserId;
         }
+
+        public void UnassingAlexaFromUser()
+         => AlexaUserId = string.Empty;
     }
 }
