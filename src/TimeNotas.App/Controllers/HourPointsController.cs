@@ -40,6 +40,13 @@ namespace TimeNotas.App.Controllers
             _excelExport = excelExport;
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<string> OpenEndPoint()
+        {
+            return await Task.FromResult("DEU CERTO MANO");
+        }
+
         public async Task<IActionResult> Index(DateTime? searchDate = null)
         {
             if (!searchDate.HasValue)
