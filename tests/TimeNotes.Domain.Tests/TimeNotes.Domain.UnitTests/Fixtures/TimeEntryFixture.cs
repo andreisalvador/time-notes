@@ -9,6 +9,6 @@ namespace TimeNotes.Domain.UnitTests.Fixtures
             => new TimeEntry(DateTime.MinValue);
 
         public override TimeEntry CreateValid(params object[] @params)
-            => new TimeEntry(@params.Length <= 0 ? DateTime.Now : (DateTime)@params[0]);
+            => new TimeEntry(@params.Length <= 0 ? DateTime.Now.Date : (DateTime)@params[0]);
     }
 }
