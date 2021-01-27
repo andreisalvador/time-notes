@@ -46,7 +46,7 @@ namespace TimeNotes.Domain.UnitTests
         public void TimeEntry_ChangeDateHourPointed_ShouldChangeTheDateHourPointedFromTimeEntry()
         {
             TimeEntry timeEntry = _fixtureWrapper.TimeEntryFixture.CreateValid();
-            DateTime newDateHourPointed = DateTime.Now.Date.AddHours(2).AddSeconds(-DateTime.Now.Second);
+            DateTime newDateHourPointed = DateTime.Now.Date.AddHours(2);
             timeEntry.ChangeDateHourPointed(newDateHourPointed);
 
             timeEntry.DateHourPointed.Should().Be(newDateHourPointed);
